@@ -1184,17 +1184,17 @@
       "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/chunks/splash-screen-vs.chunk",
       "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/chunks/splash-screen-fs.chunk"
     ],
-    "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-Bold.fnt": [
-      "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-Bold_0.png"
+    "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-Italic.fnt": [
+      "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-Italic_0.png"
     ],
     "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-BoldItalic.fnt": [
       "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-BoldItalic_0.png"
     ],
-    "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-Italic.fnt": [
-      "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-Italic_0.png"
-    ],
     "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-Regular.fnt": [
       "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-Regular_0.png"
+    ],
+    "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-Bold.fnt": [
+      "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_fonts/builtin-bitmap/OpenSans-Bold_0.png"
     ],
     "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_ui/atom.plist": [
       "/Applications/Cocos/Creator/3.6.1/CocosCreator.app/Contents/Resources/resources/3d/engine/editor/assets/default_ui/atom.png"
