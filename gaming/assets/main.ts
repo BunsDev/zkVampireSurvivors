@@ -1,6 +1,6 @@
 import { Component, EventTouch, Label, Node, Prefab, Slider, Toggle, _decorator, instantiate, setDisplayStats } from 'cc';
-import { BulletHell } from './fight/bulletHell';
-import { Player } from './fight/player';
+import { BulletHell } from './scripts/fight/bulletHell';
+import { Player } from './scripts/fight/player';
 
 const { ccclass, property } = _decorator;
 

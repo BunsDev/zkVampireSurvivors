@@ -1,7 +1,7 @@
 import { _decorator, CCInteger, Component, instantiate, Node, Prefab, Quat, Sprite, Vec2, Vec3 } from 'cc';
 import { cCollider } from '../collision/Collider';
 import { cObject } from '../collision/Object';
-import { Joystick } from '../Joystick/Joystick';
+import { Joystick } from '../../components/Joystick/Joystick';
 import { Bullet } from './bullet';
 import { Ghost } from './ghost';
 import { Player } from './player';

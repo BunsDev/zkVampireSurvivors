@@ -97,8 +97,10 @@ export class Ghost extends cObject {
 
         switch (b.group) {
             case this.BULLET: //碰到子弹
+                console.log('碰到子弹...');
                 break;
             case this.PLAYER: //碰到player
+                console.log('碰到player...');
                 break;
         }
 
