@@ -1,7 +1,0 @@
-{
-  "__version__": "3.0.18",
-  "mini_transformObjectKeys": false,
-  "mini_is_AST_obfus": true,
-  "mini_identifierNamesGenerator": "2",
-  "mini_renameGlobals": true
-}

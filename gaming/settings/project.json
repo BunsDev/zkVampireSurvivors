@@ -1,0 +1,93 @@
+{
+  "group-list": [
+    "default",
+    "sprite2d",
+    "enemy",
+    "player",
+    "bullet",
+    "skill",
+    "goods"
+  ],
+  "collision-matrix": [
+    [
+      false
+    ],
+    [
+      false,
+      true
+    ],
+    [
+      false,
+      false,
+      false,
+      true,
+      true,
+      true
+    ],
+    [
+      false,
+      false,
+      true,
+      false
+    ],
+    [
+      false,
+      false,
+      true,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      true,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  ],
+  "excluded-modules": [
+    "Collider",
+    "Physics",
+    "3D Physics/cannon.js",
+    "SafeArea"
+  ],
+  "preview-port": 7456,
+  "design-resolution-width": 1280,
+  "design-resolution-height": 720,
+  "fit-width": false,
+  "fit-height": true,
+  "use-project-simulator-setting": false,
+  "simulator-orientation": false,
+  "use-customize-simulator": true,
+  "simulator-resolution": {
+    "width": 960,
+    "height": 640
+  },
+  "clear-simulator-cache": true,
+  "facebook": {
+    "enable": false,
+    "appID": "",
+    "live": {
+      "enable": false
+    },
+    "audience": {
+      "enable": false
+    }
+  },
+  "start-scene": "69f7d0dc-b72c-426f-8a46-22de3ab35201",
+  "migrate-history": [
+    "cloud-function"
+  ],
+  "last-module-event-record-time": 0,
+  "assets-sort-type": "name"
+}

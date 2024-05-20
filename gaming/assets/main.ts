@@ -1,67 +1,58 @@
-import { Component, EventTouch, Label, Node, Prefab, Slider, Toggle, _decorator, instantiate, setDisplayStats } from 'cc';
-import { BulletHell } from './scripts/fight/bulletHell';
-import { Player } from './scripts/fight/player';
 
-const { ccclass, property } = _decorator;
+import { BulletHell } from './demos/bulletHell/bulletHell';
+import { Player } from './demos/bulletHell/player';
 
-@ccclass('main')
-export class main extends Component {
+const { ccclass, property } = cc._decorator;
 
-    @property(Prefab)
-    demoBullet: Prefab = null;
+@ccclass
+export class main extends cc.Component {
 
-    @property(Node)
-    sceneNode: Node = null;
+    @property(cc.Prefab)
+    demoBullet: cc.Prefab = null;
 
-    @property(Label)
-    totalTxt: Label = null;
+    @property(cc.Node)
+    demosNode: cc.Node = null;
+
+    @property(cc.Label)
+    totalTxt: cc.Label = null;
 
 
-    currentScene: Node = null;
-
-    myAddress: any;
+    currScense: cc.Node = null;
 
     start() {
-        // this.onClickConnect();
-
-        setDisplayStats(true);
-
         this.changeDemos();
 
         //刷新物体个数
         this.schedule(() => {
-            let length = this.currentScene.getComponentInChildren(BulletHell).objects.children.length;
+            let length = this.currScense.getComponentInChildren(BulletHell).objects.children.length;
             this.totalTxt.string = "" + length;
         }, 0.1);
     }
 
     changeDemos() {
-        if (this.currentScene) {
+        if (this.currScense) {
             //释放旧场景
-            this.currentScene.removeFromParent();
-            this.currentScene.destroy();
-            this.currentScene = null;
+            this.currScense.removeFromParent();
+            this.currScense.destroy();
+            this.currScense = null;
         }
 
-        this.currentScene = instantiate(this.demoBullet);
+        this.currScense = cc.instantiate(this.demoBullet);
         this.node.getChildByName("Skill").active = true;
 
         //下一帧加载新场景
         this.scheduleOnce(() => {
-            this.sceneNode.addChild(this.currentScene);
+            this.demosNode.addChild(this.currScense);
         });
     }
 
+    onSkill(event: cc.Event.EventTouch) {
+        Player.inst.onSkill();
 
-    onSkill(event:EventTouch) {
-
-       Player.inst.onSkill();
-       
-       //示范做了个定时
-       event.target.active = false;
-       this.scheduleOnce(()=>{
-        event.target.active = true;
-       },5);
+        event.target.active = false;
+        this.scheduleOnce(() => {
+            event.target.active = true;
+        }, 5);
     }
 }
 
