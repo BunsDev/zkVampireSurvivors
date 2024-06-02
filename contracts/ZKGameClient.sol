@@ -59,6 +59,7 @@ contract ZKGameClient is OwnerIsCreator {
     uint[10] public topGradeList; // Top 10 grade List, timestamp
     address[10] public topPlayerList; // Top 10 player List, address
     uint[10] public topChainIndex; // Top 10 chainIndex List, address
+    uint public lastUpdateTime; // last update time of topList
 
 
     constructor(uint _currentChainSelectorIndex) {
@@ -217,9 +218,11 @@ contract ZKGameClient is OwnerIsCreator {
             topPlayerList[left] = player;
             topChainIndex[left] = chainIndex;
         }
+
+        lastUpdateTime = block.timestamp;
     }
 
-    function getTopGradeList() public view returns (uint[10] memory, uint[10] memory, address[10] memory) {
-        return (topGradeList, topChainIndex, topPlayerList);
+    function getTopListInfo() public view returns (uint[10] memory, uint[10] memory, address[10] memory, uint) {
+        return (topGradeList, topChainIndex, topPlayerList, lastUpdateTime);
     }
 }
