@@ -236,8 +236,6 @@ export default class CocosZ extends cc.Component {
       } else {
       }
     });
-
-    await this._web3Mgr.initWeb3();
   }
 
   private _dtBack = 1 / 60;

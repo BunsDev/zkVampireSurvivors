@@ -167,7 +167,19 @@ export default class UILoadingPage extends UIPage {
         break;
       }
       case "BtnWallet": {
-        this.handleWallet();
+        let network = cocosz.web3Mgr.Network;
+        let networkMain = cocosz.web3Mgr.NetworkMain;
+
+        let isNetworkSelected =
+          network != null &&
+          network != "" &&
+          networkMain != null &&
+          networkMain != "";
+        if(isNetworkSelected) {
+          this.handleWallet();
+        } else {
+          alert('Please select network first!');
+        }
         break;
       }
       case "BtnEthereum": {

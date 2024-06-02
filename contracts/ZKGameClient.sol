@@ -188,6 +188,10 @@ contract ZKGameClient is OwnerIsCreator {
     function pushDataToTopList(MessageItem memory messageItem) internal {
         uint time = messageItem.time;
         address player = messageItem.player;
+        // TODO: debug
+        // pre: [123456,0,0,0,0,0,0,0,0,0,0]
+        // push: 9999999999
+        // then: [9999999999,0,0,0,0,0,0,0,0,0,0]
         if(topGradeList[topGradeList.length -1] < time) {
             bool found = false;
             for(uint i =0; i< topGradeList.length; i++) {
