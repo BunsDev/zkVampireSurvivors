@@ -1,0 +1,245 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"goerli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"ccipSend(uint64,(bytes,bytes,(address,uint256)[],address,bytes))": "96f4e9f9",
+			"getFee(uint64,(bytes,bytes,(address,uint256)[],address,bytes))": "20487ded",
+			"getSupportedTokens(uint64)": "fbca3b74",
+			"isChainSupported(uint64)": "a48a9058"
+		}
+	},
+	"abi": [
+		{
+			"inputs": [],
+			"name": "InsufficientFeeTokenAmount",
+			"type": "error"
+		},
+		{
+			"inputs": [],
+			"name": "InvalidMsgValue",
+			"type": "error"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint64",
+					"name": "destChainSelector",
+					"type": "uint64"
+				}
+			],
+			"name": "UnsupportedDestinationChain",
+			"type": "error"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint64",
+					"name": "destinationChainSelector",
+					"type": "uint64"
+				},
+				{
+					"components": [
+						{
+							"internalType": "bytes",
+							"name": "receiver",
+							"type": "bytes"
+						},
+						{
+							"internalType": "bytes",
+							"name": "data",
+							"type": "bytes"
+						},
+						{
+							"components": [
+								{
+									"internalType": "address",
+									"name": "token",
+									"type": "address"
+								},
+								{
+									"internalType": "uint256",
+									"name": "amount",
+									"type": "uint256"
+								}
+							],
+							"internalType": "struct Client.EVMTokenAmount[]",
+							"name": "tokenAmounts",
+							"type": "tuple[]"
+						},
+						{
+							"internalType": "address",
+							"name": "feeToken",
+							"type": "address"
+						},
+						{
+							"internalType": "bytes",
+							"name": "extraArgs",
+							"type": "bytes"
+						}
+					],
+					"internalType": "struct Client.EVM2AnyMessage",
+					"name": "message",
+					"type": "tuple"
+				}
+			],
+			"name": "ccipSend",
+			"outputs": [
+				{
+					"internalType": "bytes32",
+					"name": "",
+					"type": "bytes32"
+				}
+			],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint64",
+					"name": "destinationChainSelector",
+					"type": "uint64"
+				},
+				{
+					"components": [
+						{
+							"internalType": "bytes",
+							"name": "receiver",
+							"type": "bytes"
+						},
+						{
+							"internalType": "bytes",
+							"name": "data",
+							"type": "bytes"
+						},
+						{
+							"components": [
+								{
+									"internalType": "address",
+									"name": "token",
+									"type": "address"
+								},
+								{
+									"internalType": "uint256",
+									"name": "amount",
+									"type": "uint256"
+								}
+							],
+							"internalType": "struct Client.EVMTokenAmount[]",
+							"name": "tokenAmounts",
+							"type": "tuple[]"
+						},
+						{
+							"internalType": "address",
+							"name": "feeToken",
+							"type": "address"
+						},
+						{
+							"internalType": "bytes",
+							"name": "extraArgs",
+							"type": "bytes"
+						}
+					],
+					"internalType": "struct Client.EVM2AnyMessage",
+					"name": "message",
+					"type": "tuple"
+				}
+			],
+			"name": "getFee",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "fee",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint64",
+					"name": "chainSelector",
+					"type": "uint64"
+				}
+			],
+			"name": "getSupportedTokens",
+			"outputs": [
+				{
+					"internalType": "address[]",
+					"name": "tokens",
+					"type": "address[]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint64",
+					"name": "chainSelector",
+					"type": "uint64"
+				}
+			],
+			"name": "isChainSupported",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "supported",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		}
+	]
+}
