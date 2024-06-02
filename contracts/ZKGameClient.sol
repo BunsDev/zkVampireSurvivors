@@ -33,6 +33,7 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
     }
 
     struct RequestLotteryStatus {
+        address player;
         uint256 paid; // amount paid in link
         bool fulfilled; // whether the request has been successfully fulfilled
         uint256[] randomWords;
@@ -103,9 +104,16 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
     // current network key flag
     MessageItem public currentMessageItem;
 
+    // Lottery
     LotteryItem[] public LotteryItemList;
     mapping(address => uint256) public playerLastlotteryRequestIdMap; /*  address --> requestId */
     mapping(uint256 => RequestLotteryStatus) public lotteryRequestMap; /* requestId --> requestStatus */
+
+    // player's weapon
+    mapping(address => uint[]) public playerWeaponMap; /* requestId --> uint[] */
+    mapping(address => uint[]) public playerSkinMap; /* requestId --> uint[] */
+    mapping(address => uint) public playerGoldMap; /* requestId --> uint */
+    mapping(address => uint) public playerDiamondMap; /* requestId --> uint */
 
     /// topList
     uint[10] public topGradeList; // Top 10 grade List, timestamp
@@ -119,6 +127,10 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         VRFV2PlusWrapperConsumerBase(wrapperAddressList[_currentChainSelectorIndex]) {
         currentChainSelectorIndex = _currentChainSelectorIndex;
         initLotteryList();
+    }
+
+    function setPlayerWeaponMap(uint value) external {
+        playerWeaponMap[msg.sender].push(value);
     }
 
     function initLotteryList() public onlyOwner {
@@ -137,7 +149,7 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
     }
 
     // lottery
-    function requestLottery() external returns (uint256) {
+    function requestLottery() external onlyOwner returns (uint256) {
         // TODO: pay $1
 
         bytes memory extraArgs = VRFV2PlusClient._argsToBytes(
@@ -145,12 +157,13 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         );
          // use Link token to request random
         (uint256 requestId, uint256 reqPrice) = requestRandomness(
-                1000000,
+                2000000,
                 3,
                 1,
                 extraArgs
         );
         lotteryRequestMap[requestId] = RequestLotteryStatus({
+            player: msg.sender,
             paid: reqPrice,
             randomWords: new uint256[](0),
             fulfilled: false,
@@ -161,6 +174,7 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         return requestId;
     }
 
+    // lottery
     function fulfillRandomWords(
         uint256 _requestId,
         uint256[] memory _randomWords
@@ -172,9 +186,18 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         lotteryRequestMap[_requestId].fulfilled = true;
         lotteryRequestMap[_requestId].randomWords = _randomWords;
         lotteryRequestMap[_requestId].lotteryItem = item;
-        // use 0.5 LINK token
+        // use about 2.0 LINK token
 
-        // TODO: distribute
+        address player = lotteryRequestMap[_requestId].player;
+        if(item.itemType == 0) {
+            playerGoldMap[player] += item.num;
+        } else if(item.itemType == 1) {
+            playerDiamondMap[player] += item.num;
+        } else if(item.itemType == 2) {
+            // TODO
+        } else if(item.itemType == 3) {
+            playerWeaponMap[player].push(item.num);
+        }
 
         emit RequestLotteryFulfilled(
             _requestId,
@@ -184,6 +207,12 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         );
     }
 
+    // player info
+    function getPlayerAllAssets() external view returns(uint gold,uint diamond, uint[] memory weapon,uint[] memory skin) {
+        return (playerGoldMap[msg.sender], playerDiamondMap[msg.sender],playerWeaponMap[msg.sender],playerSkinMap[msg.sender]);
+    }
+
+    // lottery
     function getPlayerLastLotteryRequestStatus() external view
         returns (uint256 paid, bool fulfilled, LotteryItem memory lotteryItem )
     {
