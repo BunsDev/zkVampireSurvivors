@@ -40,6 +40,14 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         LotteryItem lotteryItem;
     }
 
+    struct GameLog{
+        uint startTime;
+        uint endTime;
+        address player;
+        uint reLive;
+        uint grade;
+    }
+
     error NotEnoughBalance(uint256 currentBalance, uint256 calculatedFees); // Used to make sure contract has enough balance.
     error InvalidRouter(address router);
 
@@ -67,6 +75,14 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         uint256[] randomWords,
         uint256 payment,
         LotteryItem lotteryItem
+    );
+
+    event GameLogEvent(
+        uint startTime,
+        uint endTime,
+        address player,
+        uint grade,
+        uint reLive
     );
 
     // Used to identify the current chain
@@ -124,11 +140,23 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
     uint public lastUpdateTime; // last update time of topList
 
 
+    /// log
+    mapping(address => uint) public playerLatestGameLogIdMap; // id => GameLog
+    mapping(uint => GameLog) public gameLogMap; // id => GameLog
+    uint public totalGame = 0;
+
     constructor(uint _currentChainSelectorIndex)
         ConfirmedOwner(msg.sender)
         VRFV2PlusWrapperConsumerBase(wrapperAddressList[_currentChainSelectorIndex]) {
         currentChainSelectorIndex = _currentChainSelectorIndex;
         initLotteryList();
+    }
+
+    function startGame() public {
+        playerLatestGameLogIdMap[msg.sender] = totalGame;
+        gameLogMap[totalGame].startTime = block.timestamp;
+        gameLogMap[totalGame].player = msg.sender;
+        totalGame = totalGame + 1;
     }
 
     function buyOrUpgradeSkin(uint id) external {
@@ -263,11 +291,13 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
     }
 
 
-    function submitData(uint time) external {
+    function gameOver(uint time) external {
         // TODO: verify data
         // verify(bytes calldata _proof, bytes32[] calldata _publicInputs)
 
         // save data
+        gameLogMap[totalGame].endTime = block.timestamp;
+        gameLogMap[totalGame].grade = time;
         pushDataToTopList(MessageItem(msg.sender,time, currentChainSelectorIndex));
 
         // send data to another chains
@@ -282,6 +312,14 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
                 ));
             }
         }
+
+        emit GameLogEvent(
+            gameLogMap[totalGame].startTime,
+            gameLogMap[totalGame].endTime,
+            gameLogMap[totalGame].player,
+            time,
+            gameLogMap[totalGame].reLive
+        );
     }
 
     modifier onlyRouter() {

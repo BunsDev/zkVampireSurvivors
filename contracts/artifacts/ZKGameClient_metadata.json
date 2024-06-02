@@ -63,6 +63,43 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "startTime",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "endTime",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "grade",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "reLive",
+						"type": "uint256"
+					}
+				],
+				"name": "GameLogEvent",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": true,
 						"internalType": "bytes32",
 						"name": "messageId",
@@ -432,6 +469,58 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "gameLogMap",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "startTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "endTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reLive",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "grade",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "time",
+						"type": "uint256"
+					}
+				],
+				"name": "gameOver",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "getBalance",
 				"outputs": [
@@ -722,6 +811,25 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"name": "playerLatestGameLogIdMap",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
 					},
 					{
 						"internalType": "uint256",
@@ -882,14 +990,8 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "time",
-						"type": "uint256"
-					}
-				],
-				"name": "submitData",
+				"inputs": [],
+				"name": "startGame",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -971,6 +1073,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "totalGame",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -1042,6 +1157,9 @@
 				},
 				"owner()": {
 					"notice": "Get the current owner"
+				},
+				"playerLatestGameLogIdMap(address)": {
+					"notice": "log"
 				},
 				"topGradeList(uint256)": {
 					"notice": "topList"
@@ -1201,11 +1319,11 @@
 			]
 		},
 		"ZKGameClient.sol": {
-			"keccak256": "0x534b7122a23668d85c68e1cfbf822db799f274fde379b2424c5cc352e76345c8",
+			"keccak256": "0x9e914d508c7503690e6c7551b07c05b6c74ad236f3d82b3c380e16ea20f4f524",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d22d0c613d582651b3c6d80d025a18be6fa288ff4ac01344a769edeb4663221b",
-				"dweb:/ipfs/QmYqysDGCKEp3H63FtWDer2qPYKxh8B9mufKJW5VLHjYqw"
+				"bzz-raw://3bb3df7ee0faa9f21c417cd712dbeb9d17458bdd562b74b5557847f552e6e784",
+				"dweb:/ipfs/QmQn9WE3uW4CjiNt4uuuNjuyvhRBCUQx5rJYPkDwNutj5P"
 			]
 		}
 	},

@@ -214,11 +214,11 @@
 			]
 		},
 		"ZKGameClient.sol": {
-			"keccak256": "0x534b7122a23668d85c68e1cfbf822db799f274fde379b2424c5cc352e76345c8",
+			"keccak256": "0x9e914d508c7503690e6c7551b07c05b6c74ad236f3d82b3c380e16ea20f4f524",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d22d0c613d582651b3c6d80d025a18be6fa288ff4ac01344a769edeb4663221b",
-				"dweb:/ipfs/QmYqysDGCKEp3H63FtWDer2qPYKxh8B9mufKJW5VLHjYqw"
+				"bzz-raw://3bb3df7ee0faa9f21c417cd712dbeb9d17458bdd562b74b5557847f552e6e784",
+				"dweb:/ipfs/QmQn9WE3uW4CjiNt4uuuNjuyvhRBCUQx5rJYPkDwNutj5P"
 			]
 		}
 	},
