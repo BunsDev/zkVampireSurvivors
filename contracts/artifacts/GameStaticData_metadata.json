@@ -1,0 +1,315 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "getAllSkinById",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "life",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint16[7]",
+								"name": "hp",
+								"type": "uint16[7]"
+							},
+							{
+								"internalType": "uint8[7]",
+								"name": "atk",
+								"type": "uint8[7]"
+							},
+							{
+								"internalType": "uint16[7]",
+								"name": "speed",
+								"type": "uint16[7]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "priceType",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct GameStaticData.Skin",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllSkinId",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "getAllWeaponById",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint8[4]",
+								"name": "atk",
+								"type": "uint8[4]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "atkRange",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "flySpeed",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint8[4]",
+								"name": "atkSpeed",
+								"type": "uint8[4]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "bulletNum",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint8[4]",
+								"name": "bulletTotal",
+								"type": "uint8[4]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reload",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "priceType",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct GameStaticData.Weapon",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllWeaponId",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "skinIdList",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "skinMap",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "life",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "priceType",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "weaponIdList",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "weaponMap",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "atkRange",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "flySpeed",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "bulletNum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reload",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "priceType",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"GameStaticData.sol": "GameStaticData"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"GameStaticData.sol": {
+			"keccak256": "0x86788e2edd4812776cf6ea878fdea9b3b445dff6b3360866675bf13a2503497e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d086b8035dfab48a8b6d75c12ec850d651b1904ebad415bae1d17846da2e0b4e",
+				"dweb:/ipfs/QmXK7ZLprCaMgMLyNvt9hmPRuFV67qXspm7V1481rDetwD"
+			]
+		}
+	},
+	"version": 1
+}

@@ -301,6 +301,32 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "buyOrUpgradeSkin",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "buyOrUpgradeWeapon",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"components": [
 							{
 								"internalType": "bytes32",
@@ -703,7 +729,55 @@
 						"type": "uint256"
 					}
 				],
+				"name": "playerSkinLevelMap",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
 				"name": "playerSkinMap",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "playerWeaponLevelMap",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -805,19 +879,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "value",
-						"type": "uint256"
-					}
-				],
-				"name": "setPlayerWeaponMap",
-				"outputs": [],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -1005,7 +1066,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -1140,11 +1201,11 @@
 			]
 		},
 		"ZKGameClient.sol": {
-			"keccak256": "0x37e919cb1770093afcd985eb7789ee7b51ca102ee8b9d70f72a9a17efa3fd0c3",
+			"keccak256": "0x534b7122a23668d85c68e1cfbf822db799f274fde379b2424c5cc352e76345c8",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b2f048f9f63ea6eee1bcfe795b0ae2e9c2b7c2c13efe56a0a19234ba8d08bf75",
-				"dweb:/ipfs/QmZsGoWbu1hXrxPuxKwZtsuV4tCWuGb9Tug6stB3sNajSm"
+				"bzz-raw://d22d0c613d582651b3c6d80d025a18be6fa288ff4ac01344a769edeb4663221b",
+				"dweb:/ipfs/QmYqysDGCKEp3H63FtWDer2qPYKxh8B9mufKJW5VLHjYqw"
 			]
 		}
 	},

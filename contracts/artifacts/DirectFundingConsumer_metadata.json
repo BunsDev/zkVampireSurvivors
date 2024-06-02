@@ -1,0 +1,135 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "getAllSkin",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "life",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint16[7]",
+								"name": "hp",
+								"type": "uint16[7]"
+							},
+							{
+								"internalType": "uint8[7]",
+								"name": "atk",
+								"type": "uint8[7]"
+							},
+							{
+								"internalType": "uint16[7]",
+								"name": "speed",
+								"type": "uint16[7]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "priceType",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct DirectFundingConsumer.Skin[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "skinList",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "life",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "priceType",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"GameStaticData.sol": "DirectFundingConsumer"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"GameStaticData.sol": {
+			"keccak256": "0x6a8f22be4141a761419a3bc7df3cb3a3f6e5851f67e73f0248ed9c9464fb9323",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d22d76a986c5f836bf992b78e60671ebae1839a2ba0ac1b9f44facf59d814cbf",
+				"dweb:/ipfs/QmVGhkZJS2pj2huiphWy4DJh2QYomMeDXYZDFzzra1VUra"
+			]
+		}
+	},
+	"version": 1
+}

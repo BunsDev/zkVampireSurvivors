@@ -1,0 +1,135 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "getAllSkin",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "life",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint16[7]",
+								"name": "hp",
+								"type": "uint16[7]"
+							},
+							{
+								"internalType": "uint8[7]",
+								"name": "atk",
+								"type": "uint8[7]"
+							},
+							{
+								"internalType": "uint16[7]",
+								"name": "speed",
+								"type": "uint16[7]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "priceType",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct G.Skin[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "skinList",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "life",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "priceType",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"GameStaticData.sol": "G"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"GameStaticData.sol": {
+			"keccak256": "0xdab8e8e24c7022c70c53c7ba2bd2d88a5a7d4c52daa10f2546ff2631d9d38b89",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://23b3abcb95bfc8d035ff23931303e6dacec7f1a3a814f57a796242a201503d87",
+				"dweb:/ipfs/Qmch1iy4N5uYexuvfkBGsJVk82oCrLdssxe7hG2XpwV3gk"
+			]
+		}
+	},
+	"version": 1
+}

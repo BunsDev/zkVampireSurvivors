@@ -1,0 +1,135 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "getAllSkin",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "life",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint16[7]",
+								"name": "hp",
+								"type": "uint16[7]"
+							},
+							{
+								"internalType": "uint8[7]",
+								"name": "atk",
+								"type": "uint8[7]"
+							},
+							{
+								"internalType": "uint16[7]",
+								"name": "speed",
+								"type": "uint16[7]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "priceType",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct GameSt.Skin[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "skinList",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "life",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "priceType",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"GameStaticData.sol": "GameSt"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"GameStaticData.sol": {
+			"keccak256": "0x2ca97eff66633b6a11673350111c2339d90481116d51a00c37f639fdcf020c08",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://fb04084f74d637dbd6e815e055e6334e341275c95a5d11dc5601b00fa09018e4",
+				"dweb:/ipfs/QmPTPPPC18nTSzsrEgUk3YEcRBTjgHsuZigXUS43Ai3uRg"
+			]
+		}
+	},
+	"version": 1
+}

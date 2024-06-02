@@ -111,7 +111,9 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
 
     // player's weapon
     mapping(address => uint[]) public playerWeaponMap; /* requestId --> uint[] */
+    mapping(address => mapping(uint=>uint)) public playerWeaponLevelMap; /* requestId --> id ->level*/
     mapping(address => uint[]) public playerSkinMap; /* requestId --> uint[] */
+    mapping(address => mapping(uint=>uint)) public playerSkinLevelMap; /* requestId --> id ->level*/
     mapping(address => uint) public playerGoldMap; /* requestId --> uint */
     mapping(address => uint) public playerDiamondMap; /* requestId --> uint */
 
@@ -129,8 +131,34 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         initLotteryList();
     }
 
-    function setPlayerWeaponMap(uint value) external {
-        playerWeaponMap[msg.sender].push(value);
+    function buyOrUpgradeSkin(uint id) external {
+        uint[] memory skinList = playerSkinMap[msg.sender];
+        bool found = false;
+        for(uint i=0; i<skinList.length; i++) {
+            if(skinList[i] == id) {
+                found = true;
+            }
+        }
+        if(found) {
+            playerSkinLevelMap[msg.sender][id]++;
+        } else {
+            playerSkinMap[msg.sender].push(id);
+        }
+    }
+
+    function buyOrUpgradeWeapon(uint id) external {
+        uint[] memory weaponList = playerWeaponMap[msg.sender];
+        bool found = false;
+        for(uint i=0; i<weaponList.length; i++) {
+            if(weaponList[i] == id) {
+                found = true;
+            }
+        }
+        if(found) {
+            playerWeaponLevelMap[msg.sender][id]++;
+        } else {
+            playerWeaponMap[msg.sender].push(id);
+        }
     }
 
     function initLotteryList() public onlyOwner {
