@@ -8,13 +8,24 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint64",
-						"name": "_currentChainSelector",
-						"type": "uint64"
+						"internalType": "uint256",
+						"name": "_currentChainSelectorIndex",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "router",
+						"type": "address"
+					}
+				],
+				"name": "InvalidRouter",
+				"type": "error"
 			},
 			{
 				"inputs": [
@@ -31,6 +42,54 @@
 				],
 				"name": "NotEnoughBalance",
 				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "messageId",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint64",
+						"name": "sourceChainSelector",
+						"type": "uint64"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "player",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "time",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "chainIndex",
+								"type": "uint256"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct ZKGameClient.MessageItem",
+						"name": "messageItem",
+						"type": "tuple"
+					}
+				],
+				"name": "MessageReceived",
+				"type": "event"
 			},
 			{
 				"anonymous": false,
@@ -63,6 +122,11 @@
 							{
 								"internalType": "uint256",
 								"name": "time",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "chainIndex",
 								"type": "uint256"
 							}
 						],
@@ -135,6 +199,58 @@
 			{
 				"inputs": [
 					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "messageId",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "uint64",
+								"name": "sourceChainSelector",
+								"type": "uint64"
+							},
+							{
+								"internalType": "bytes",
+								"name": "sender",
+								"type": "bytes"
+							},
+							{
+								"internalType": "bytes",
+								"name": "data",
+								"type": "bytes"
+							},
+							{
+								"components": [
+									{
+										"internalType": "address",
+										"name": "token",
+										"type": "address"
+									},
+									{
+										"internalType": "uint256",
+										"name": "amount",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct Client.EVMTokenAmount[]",
+								"name": "destTokenAmounts",
+								"type": "tuple[]"
+							}
+						],
+						"internalType": "struct Client.Any2EVMMessage",
+						"name": "message",
+						"type": "tuple"
+					}
+				],
+				"name": "ccipReceive",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
@@ -153,12 +269,58 @@
 			},
 			{
 				"inputs": [],
-				"name": "currentChainSelector",
+				"name": "currentChainSelectorIndex",
 				"outputs": [
 					{
-						"internalType": "uint64",
+						"internalType": "uint256",
 						"name": "",
-						"type": "uint64"
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "currentMessageItem",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "player",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "time",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "chainIndex",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getTopGradeList",
+				"outputs": [
+					{
+						"internalType": "uint256[10]",
+						"name": "",
+						"type": "uint256[10]"
+					},
+					{
+						"internalType": "uint256[10]",
+						"name": "",
+						"type": "uint256[10]"
+					},
+					{
+						"internalType": "address[10]",
+						"name": "",
+						"type": "address[10]"
 					}
 				],
 				"stateMutability": "view",
@@ -250,6 +412,82 @@
 			{
 				"inputs": [
 					{
+						"internalType": "bytes4",
+						"name": "interfaceId",
+						"type": "bytes4"
+					}
+				],
+				"name": "supportsInterface",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "topChainIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "topGradeList",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "topPlayerList",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "to",
 						"type": "address"
@@ -311,6 +549,22 @@
 		"remappings": []
 	},
 	"sources": {
+		"@chainlink/contracts-ccip@1.4.0/src/v0.8/ccip/applications/CCIPReceiver.sol": {
+			"keccak256": "0x23827b8b1cd9f1d7886720ab0347d34891c4a584dc9ee048b85a41dc2241917f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://36de1af7a5a8bee82e009e11d82ae908cc49369e470e2fd09e0f3dc1636daa99",
+				"dweb:/ipfs/QmQigXBWez6ZxxMAXB9sjQ86wEnTnB1hmbMcm9wrpcmDK9"
+			]
+		},
+		"@chainlink/contracts-ccip@1.4.0/src/v0.8/ccip/interfaces/IAny2EVMMessageReceiver.sol": {
+			"keccak256": "0xd2a05a4f58a453cbf8cfa6aa78f58cb8e42091b3a025f711a0aa51f584e16b48",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e3bb4ca50612b0150a29b9ea7c82f6228914ff54716584541bad5c0259e8fa33",
+				"dweb:/ipfs/QmTnqhNtBD9bUmqVaR4YHkWrBUdSGHV3DXAgrTM193PGkH"
+			]
+		},
 		"@chainlink/contracts-ccip@1.4.0/src/v0.8/ccip/interfaces/IRouterClient.sol": {
 			"keccak256": "0x7f2fdd93e516b7476c6fab099f6806adf5ceaf399b0cc415f6b9ede890f2379b",
 			"license": "MIT",
@@ -359,6 +613,14 @@
 				"dweb:/ipfs/QmNoBX8TY424bdQWyQC7y3kpKfgxyWxhLw7KEhhEEoBN9q"
 			]
 		},
+		"@chainlink/contracts-ccip@1.4.0/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/utils/introspection/IERC165.sol": {
+			"keccak256": "0xa36a31b4bb17fad88d023474893b3b895fa421650543b1ce5aefc78efbd43244",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0f235b9175d95111f301d729566e214c32559e55a2b0579c947484748e20679d",
+				"dweb:/ipfs/QmSsNBuPejy1wNe2u3JSt2p9wFhrjvBjFrnAaNe1nDNkEA"
+			]
+		},
 		"@chainlink/contracts@1.1.1/src/v0.8/shared/interfaces/LinkTokenInterface.sol": {
 			"keccak256": "0xd3643595b0a46f577fff806736cbe4e3f81707c93fb1693a8a7960466e5cd321",
 			"license": "MIT",
@@ -368,11 +630,11 @@
 			]
 		},
 		"ZKGameClient.sol": {
-			"keccak256": "0x32e653d475e115a3b00436934ff23588c78b50ff6849cdb5d2bb21f62103e1e1",
+			"keccak256": "0x944ef916ad16c1c948a1678e02bdcd5d87341227415ade3258c1c66250bac3c7",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://58c0e66c340fc3572ff6652815c2bbf06a170e4d64e3b274f565fff0f95bb827",
-				"dweb:/ipfs/QmP9KaQVMpWCoMrdJJvop9TJKB1t9Z3je3XNmwx2f3egb5"
+				"bzz-raw://e00d5b33fd5a758b30fb28dc75fcdb7d2cc248edab2723d7ec983a7d10d9e6ad",
+				"dweb:/ipfs/QmdawthNan4C4trtrDYEiAXpXXAyEiSMCjF4t2mXthMtph"
 			]
 		}
 	},

@@ -19,6 +19,7 @@ contract ZKGameClient is OwnerIsCreator {
     struct MessageItem {
         address player;
         uint time;
+        uint chainIndex;
     }
 
     error NotEnoughBalance(uint256 currentBalance, uint256 calculatedFees); // Used to make sure contract has enough balance.
@@ -57,6 +58,7 @@ contract ZKGameClient is OwnerIsCreator {
 
     uint[10] public topGradeList; // Top 10 grade List, timestamp
     address[10] public topPlayerList; // Top 10 player List, address
+    uint[10] public topChainIndex; // Top 10 chainIndex List, address
 
 
     constructor(uint _currentChainSelectorIndex) {
@@ -96,7 +98,7 @@ contract ZKGameClient is OwnerIsCreator {
         // verify(bytes calldata _proof, bytes32[] calldata _publicInputs)
 
         // save data
-        pushDataToTopList(MessageItem(msg.sender,time));
+        pushDataToTopList(MessageItem(msg.sender,time, currentChainSelectorIndex));
 
         // send data to another chains
         for(uint i=0; i<chainSelectors.length; i++) {
@@ -105,7 +107,8 @@ contract ZKGameClient is OwnerIsCreator {
             if(chainSelectors[currentChainSelectorIndex] != chainSelector && receiver != address(0)) {
                 _sendMessage(chainSelector, receiver, linkTokens[currentChainSelectorIndex], routers[currentChainSelectorIndex], MessageItem(
                     msg.sender,
-                    time
+                    time,
+                    currentChainSelectorIndex
                 ));
             }
         }
@@ -185,30 +188,38 @@ contract ZKGameClient is OwnerIsCreator {
         );
     }
 
+    /// Use binary search algorithm
     function pushDataToTopList(MessageItem memory messageItem) internal {
         uint time = messageItem.time;
         address player = messageItem.player;
-        // TODO: debug
-        // pre: [123456,0,0,0,0,0,0,0,0,0,0]
-        // push: 9999999999
-        // then: [9999999999,0,0,0,0,0,0,0,0,0,0]
+        uint chainIndex = messageItem.chainIndex;
+
         if(topGradeList[topGradeList.length -1] < time) {
-            bool found = false;
-            for(uint i =0; i< topGradeList.length; i++) {
-                if(!found && time > topGradeList[i]) {
-                    found = true;
-                    topGradeList[i] = time;
-                    topPlayerList[i] = player;
+            uint left = 0;
+            uint right = topGradeList.length - 1;
+            uint mid;
+
+            while (left < right) {
+                mid = (left + right) / 2;
+                if (topGradeList[mid] < time) {
+                    right = mid;
+                } else {
+                    left = mid + 1;
                 }
             }
+
+            for(uint i = topGradeList.length - 1; i > left; i--) {
+                topGradeList[i] = topGradeList[i - 1];
+                topPlayerList[i] = topPlayerList[i - 1];
+                topChainIndex[i] = topChainIndex[i - 1];
+            }
+            topGradeList[left] = time;
+            topPlayerList[left] = player;
+            topChainIndex[left] = chainIndex;
         }
     }
 
-    // function getData() public view returns(bytes memory) {
-    //     return abi.encode(MessageItem(msg.sender, block.timestamp));
-    // }
-
-    // function setData(bytes memory data) external {
-    //     currentMessageItem = abi.decode(data, (MessageItem));
-    // }
+    function getTopGradeList() public view returns (uint[10] memory, uint[10] memory, address[10] memory) {
+        return (topGradeList, topChainIndex, topPlayerList);
+    }
 }
