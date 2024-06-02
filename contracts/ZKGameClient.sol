@@ -19,6 +19,13 @@ interface IERC165 {
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
 
+interface AggregatorV3Interface {
+  function latestRoundData()
+    external
+    view
+    returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
+}
+
 contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
     struct MessageItem {
         address player;
@@ -114,6 +121,11 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         14767482510784806043, // Avalanche Fuji testnet
         16281711391670634445 // Polygon Amoy testnet
     ];
+    address[3] public gasTokenAggregators = [
+        0x694AA1769357215DE4FAC081bf1f309aDC325306, // Ethereum Sepolia testnet ETH/USD
+        0x5498BB86BC934c8D34FDA08E81D444153d0D06aD, // Avalanche Fuji testnet AVAX/USD
+        0x001382149eBa3441043c1c66972b4772963f5D43 // Polygon Amoy testnet MATIC/USD
+    ];
      // receiver contract List
     address[3] public receivers;
 
@@ -152,11 +164,38 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         initLotteryList();
     }
 
-    function startGame() public {
+    // eg. 3000usdt = 1 eth = 10**18
+    // current eth price: $3000, if usd = 3000, then you will get 10**18
+    function getGasTokenAmountByUsd(uint usd) public view returns(uint) {
+        (, int256 price, , , ) = AggregatorV3Interface(gasTokenAggregators[currentChainSelectorIndex]).latestRoundData();
+        return usd * uint((10**18/price) * 10**8); // will not overflow, when eth price is under $10**10
+    }
+
+    function distribution(address payable winner, uint amount) internal {
+        winner.transfer(amount);
+    }
+
+    function startGame() public payable {
+        uint gasTokenAmountToPay = getGasTokenAmountByUsd(1); // $1
+        require(msg.value >= gasTokenAmountToPay,"Gas Token is not enough!");
+        address payable topPlayer = payable(topPlayerList[0]);
+        uint balance = address(this).balance;
+        if(balance >0 && topPlayer != address(0)) {
+            distribution(topPlayer, balance);
+        }
         playerLatestGameLogIdMap[msg.sender] = totalGame;
         gameLogMap[totalGame].startTime = block.timestamp;
         gameLogMap[totalGame].player = msg.sender;
         totalGame = totalGame + 1;
+    }
+
+    function reLive() public payable {
+        uint gasTokenAmountToPay = getGasTokenAmountByUsd(5); // $5
+        require(msg.value >= gasTokenAmountToPay,"Gas Token is not enough!");
+        address payable top1Player = payable(topPlayerList[0]);
+        if(top1Player != address(0)) {
+            distribution(top1Player, gasTokenAmountToPay);
+        }
     }
 
     function buyOrUpgradeSkin(uint id) external {
