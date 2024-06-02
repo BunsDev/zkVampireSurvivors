@@ -196,7 +196,7 @@ export default class CocosZ extends cc.Component {
   isDeBug: boolean = false;
 
   isADON: boolean = true;
-  onLoad() {
+  async onLoad() {
     cocosz = this;
     this._web3Mgr = Web3Mgr.inst;
     this._gameMgr = GameMgr.inst;
@@ -236,6 +236,8 @@ export default class CocosZ extends cc.Component {
       } else {
       }
     });
+
+    await this._web3Mgr.initWeb3();
   }
 
   private _dtBack = 1 / 60;

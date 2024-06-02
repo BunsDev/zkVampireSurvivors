@@ -1,4 +1,8 @@
 const i18n = require("LanguageData");
+const Web3 = require("web3/dist/web3.min.js");
+
+const WinEthereum = window["ethereum"];
+const WinWeb3 = window["web3"];
 
 export default class Web3Mgr {
   private static _inst: Web3Mgr;
@@ -50,5 +54,27 @@ export default class Web3Mgr {
     this._wallet = wallet;
     const address = "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59";
     this._address = address.slice(0, 6) + "..." + address.slice(-4);
+  }
+
+  async initWeb3() {
+    this.checkMetaMask();
+    let web3Provider = new Web3.providers.HttpProvider("https://sepolia-rpc.scroll.io");
+    let web3 = await new Web3(web3Provider);
+    console.log(web3);
+  }
+
+
+  async checkMetaMask() {
+    if (WinEthereum) {
+      if (typeof WinEthereum !== "undefined") {
+        console.log("MetaMask is installed!");
+        return true;
+      } else {
+        console.log("MetaMask is not installed!");
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 }
