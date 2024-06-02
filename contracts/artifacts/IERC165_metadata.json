@@ -124,6 +124,30 @@
 				"dweb:/ipfs/QmSsNBuPejy1wNe2u3JSt2p9wFhrjvBjFrnAaNe1nDNkEA"
 			]
 		},
+		"@chainlink/contracts@1.1.1/src/v0.8/shared/access/ConfirmedOwner.sol": {
+			"keccak256": "0xdcb0e9135ddbe71ee27ba99fa06656960c66c964cf2ecb29696da1c1427d9861",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f914a1b638300e82d8f5a020a4195235599afebab4ef1e10c6992f3c90e7df3e",
+				"dweb:/ipfs/Qmf2MbuVB16qbCGii3U5cjcBvVjAHHYzKp9voJa2eDch9B"
+			]
+		},
+		"@chainlink/contracts@1.1.1/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol": {
+			"keccak256": "0x2422a055657a87e98be61f8f31abb1824ec50fd0f73949f4e3c6ac877efb6da8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://fde3b9ac3a4c42ea43e2f92b037d32ab20e30818471c6e20d2590147a6c2958a",
+				"dweb:/ipfs/QmQ2ohQP4GnhPUsiWCvCfb1dsoGYDdxSap3dxtnYTV4rmT"
+			]
+		},
+		"@chainlink/contracts@1.1.1/src/v0.8/shared/interfaces/IOwnable.sol": {
+			"keccak256": "0x885de72b7b4e4f1bf8ba817a3f2bcc37fd9022d342c4ce76782151c30122d767",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://17c636625a5d29a140612db496d2cca9fb4b48c673adb0fd7b3957d287e75921",
+				"dweb:/ipfs/QmNoBX8TY424bdQWyQC7y3kpKfgxyWxhLw7KEhhEEoBN9q"
+			]
+		},
 		"@chainlink/contracts@1.1.1/src/v0.8/shared/interfaces/LinkTokenInterface.sol": {
 			"keccak256": "0xd3643595b0a46f577fff806736cbe4e3f81707c93fb1693a8a7960466e5cd321",
 			"license": "MIT",
@@ -132,12 +156,36 @@
 				"dweb:/ipfs/QmcE3Hef9XLSbthiS3DKQFF1ZpYDZsPLHwW1DY5iUGAfcd"
 			]
 		},
-		"ZKGameClient.sol": {
-			"keccak256": "0xdca1f056ce8a366a37e13a670e75259fbe0751fa436031ebd14a94b2556ca15d",
+		"@chainlink/contracts@1.1.1/src/v0.8/vrf/dev/VRFV2PlusWrapperConsumerBase.sol": {
+			"keccak256": "0x94aec923d28f4b16648e277717644251d47e6c90af1797d2be727619521a5b92",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c3e8acc7fd08b700658da16a947be5e464f12ab90a720691ad400bd612dac36c",
-				"dweb:/ipfs/QmZhAK3TTquDcDaurt33heL2dnHVDqUcimTu88TLnXVMPK"
+				"bzz-raw://bd163c44ff2eed3783f449fde47930bce7284a2b6f21dcf22df595eeda2364e3",
+				"dweb:/ipfs/QmasPyNTsVop19jyybb5KbDAcFi2a5WNhgPM4nZ8pmdBRV"
+			]
+		},
+		"@chainlink/contracts@1.1.1/src/v0.8/vrf/dev/interfaces/IVRFV2PlusWrapper.sol": {
+			"keccak256": "0x23a19b6fa394e21359d39d78a081ddaa68160cca4b8850afbec5843bd16a844f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f545db93aff28a897f8df61834b05be9c2f96ae953263d8c1f6d5c6648c4f3a5",
+				"dweb:/ipfs/QmbwriSRDKrEYW2HqWN2YJjco5wMgr7NBc9yUaHwr2bifu"
+			]
+		},
+		"@chainlink/contracts@1.1.1/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol": {
+			"keccak256": "0x839ad7a737ef18147b518b4ec3cbaf4a49dc994db65cf8369ed4e69d169a98a6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://882f7357f1a4d7479adda35f81c130bb9a7bfa024d5b9617c75a0539116c2a1d",
+				"dweb:/ipfs/QmWzLDgcS9jUh4AT65dQRr46ZhGHgQ4KoNfSdFiFTFqneQ"
+			]
+		},
+		"ZKGameClient.sol": {
+			"keccak256": "0x4a022a09fc9e92b393acf590cf4460375eeba15287104ca6356a83bc86f3bb0b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://4ec81cfeed4f4d320053794cc402623a9a92d8568a371af2df6b30a85e6fa108",
+				"dweb:/ipfs/QmeBP7zMd7BQ4uJdCHcUAk2HYL9jNh4j6utLhCqDctLLN7"
 			]
 		}
 	},
