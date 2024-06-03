@@ -27,52 +27,43 @@ export default class UIRankingsPanel extends UIPage {
     }
   }
 
+      // 0: Ethereum Sepolia testnet
+    // 1: Avalanche Fuji testnet
+    // 2: Polygon Amoy testnet
+  getChainNameByIndex(index) {
+    switch(index) {
+      case 0:
+        return 'ethereum';
+      case 1:
+          return 'avalanche';
+      case 2:
+        return 'polygon';
+    }
+    return 'ethereum';
+  }
+
   protected onOpen(): void {
     this._panel.scale = 0;
     cc.tween(this._panel).to(0.3, { scale: 1 }, { easing: "backOut" }).start();
 
-    const rankingsList = [
-      {
-        chain: "polygon",
-        address: "0xd00ae08403B9bbb9124bB305C09058E32C39A48c",
-        grade: 10000,
-      },
-      {
-        chain: "avalanche",
-        address: "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846",
-        grade: 40000,
-      },
-      {
-        chain: "scroll",
-        address: "0x8bB16BEDbFd62D1f905ACe8DBBF2954c8EEB4f66",
-        grade: 12000,
-      },
-      {
-        chain: "base",
-        address: "0x8bB16BEDbFd62D1f905ACe8DBBF2954c8EEB4f61",
-        grade: 22000,
-      },
-      {
-        chain: "polygon",
-        address: "0x8bB16BEDbFd62D1f905ACe8DBBF2954c8EEB4f62",
-        grade: 12001,
-      },
-      {
-        chain: "polygon",
-        address: "0x8bB16BEDbFd62D1f905ACe8DBBF2954c8EEB4f63",
-        grade: 12030,
-      },
-      {
-        chain: "avalanche",
-        address: "0x8bB16BEDbFd62D1f905ACe8DBBF2954c8EEB4f64",
-        grade: 12450,
-      },
-      {
-        chain: "optimism",
-        address: "0x8bB16BEDbFd62D1f905ACe8DBBF2954c8EEB4f66",
-        grade: 42000,
-      },
-    ];
+    let rankingsList = []
+    cocosz.web3Mgr.getTopListInfo((result)=>{
+      let topGradeList = result[0];
+      let topChainIndex = result[1];
+      let topPlayerList = result[2];
+      let lastUpdateTime = result[3];
+      for(let i=0; i<10;i++) {
+        if(topGradeList[i]>0) {
+          rankingsList.push(
+            {
+              'chain': this.getChainNameByIndex(topChainIndex[i]),
+              'address': topPlayerList[i],
+              'grade': topGradeList[i],
+            }
+          )
+        }
+      }
+    });
 
     rankingsList.sort((a, b) => b.grade - a.grade);
 
