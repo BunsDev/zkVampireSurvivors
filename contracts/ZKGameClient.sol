@@ -335,8 +335,9 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         // verify(bytes calldata _proof, bytes32[] calldata _publicInputs)
 
         // save data
-        gameLogMap[totalGame].endTime = block.timestamp;
-        gameLogMap[totalGame].grade = time;
+        uint logId = playerLatestGameLogIdMap[msg.sender];
+        gameLogMap[logId].endTime = block.timestamp;
+        gameLogMap[logId].grade = time;
         pushDataToTopList(MessageItem(msg.sender,time, currentChainSelectorIndex));
 
         // send data to another chains
@@ -353,11 +354,11 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         }
 
         emit GameLogEvent(
-            gameLogMap[totalGame].startTime,
-            gameLogMap[totalGame].endTime,
-            gameLogMap[totalGame].player,
+            gameLogMap[logId].startTime,
+            gameLogMap[logId].endTime,
+            gameLogMap[logId].player,
             time,
-            gameLogMap[totalGame].reLive
+            gameLogMap[logId].reLive
         );
     }
 
