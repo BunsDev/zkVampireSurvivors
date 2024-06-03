@@ -360,7 +360,11 @@ export default class GameMgr extends cc.Component {
 
   createZombieCount() {
     if (cocosz.isPause || gameMgr.isWin || gameMgr.isFail) return;
-
+    if(cocosz.web3Mgr.StartTime == null) {
+      cocosz.web3Mgr.StartTime = Date.now();
+    }
+    cocosz.web3Mgr.EndTime = Date.now();
+    
     this.GameTime++;
     this.showGameTime();
 

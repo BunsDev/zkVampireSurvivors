@@ -40,11 +40,13 @@ export default class UIPausePanel extends UIPage {
     await cocosz.audioMgr.playBtnEffect().catch();
     switch (event.target.name) {
       case "BtnRestart": {
-        gameMgr.isFail = true;
-        gameMgr.unscheduleAllCallbacks();
-        upgradeMgr && upgradeMgr.unscheduleAllCallbacks();
-        cocosz.uiMgr.closePanel(PanelName.UIPausePanel);
-        cocosz.gameMgr.gameStart(cocosz.dataMgr.TotoalCount_6);
+        cocosz.web3Mgr.startGame(()=> {
+          gameMgr.isFail = true;
+          gameMgr.unscheduleAllCallbacks();
+          upgradeMgr && upgradeMgr.unscheduleAllCallbacks();
+          cocosz.uiMgr.closePanel(PanelName.UIPausePanel);
+          cocosz.gameMgr.gameStart(cocosz.dataMgr.TotoalCount_6);
+        })
         break;
       }
       case "BtnResume": {
@@ -57,12 +59,14 @@ export default class UIPausePanel extends UIPage {
         break;
       }
       case "BtnHome": {
-        gameMgr.isFail = true;
-        gameMgr.unscheduleAllCallbacks();
-        upgradeMgr && upgradeMgr.unscheduleAllCallbacks();
-        cocosz.uiMgr.closePanel(PanelName.UIPausePanel);
-        cocosz.sceneMgr.loadScene(scene_home, () => {
-          cocosz.uiMgr.openPage(PageName.UIHomePage);
+        cocosz.web3Mgr.gameOver(()=>{
+          gameMgr.isFail = true;
+          gameMgr.unscheduleAllCallbacks();
+          upgradeMgr && upgradeMgr.unscheduleAllCallbacks();
+          cocosz.uiMgr.closePanel(PanelName.UIPausePanel);
+          cocosz.sceneMgr.loadScene(scene_home, () => {
+            cocosz.uiMgr.openPage(PageName.UIHomePage);
+          });
         });
         break;
       }

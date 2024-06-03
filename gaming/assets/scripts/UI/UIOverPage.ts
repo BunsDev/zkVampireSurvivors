@@ -188,12 +188,16 @@ export default class UIOverPage extends UIPage {
     if (this._isToHome) return;
     switch (event.target.name) {
       case "BtnContinue": {
-        cocosz.gameMgr.gameStart(cocosz.dataMgr.TotoalCount_6);
+        cocosz.web3Mgr.startGame(()=> {
+          cocosz.gameMgr.gameStart(cocosz.dataMgr.TotoalCount_6);
+        })
         break;
       }
       case "BtnHome": {
-        cocosz.sceneMgr.loadScene(scene_home, () => {
-          cocosz.uiMgr.openPage(PageName.UIHomePage);
+        cocosz.web3Mgr.gameOver(()=>{
+          cocosz.sceneMgr.loadScene(scene_home, () => {
+            cocosz.uiMgr.openPage(PageName.UIHomePage);
+          });
         });
         break;
       }

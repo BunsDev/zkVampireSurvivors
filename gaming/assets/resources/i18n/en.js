@@ -80,7 +80,7 @@ window.i18n.languages.en = {
         haveSkill: 'Have skills',
         attribute: 'Attribute',
         restart: 'Restart',
-        fanhui: 'Return',
+        fanhui: 'Submit',
         bjxq: 'NOW',
         lszj: 'GOAT',
         gameTime: 'Time:',

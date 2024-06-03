@@ -30,3 +30,15 @@ export const web3Config = {
         },
     },
 }
+
+export const web3ContractConfig = {
+  'Ethereum Sepolia testnet': {
+      gameAddress: '0x3e1eb98B5150eb7Fb49De2419821Ed26615B0691'
+  },
+  'Avalanche Fuji testnet': {
+    gameAddress: ''
+  },
+  'Polygon Amoy testnet': {
+    gameAddress: ''
+  },
+}

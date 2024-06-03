@@ -80,7 +80,7 @@ window.i18n.languages.zh = {
         haveSkill: '拥有技能',
         attribute: '属性',
         restart: '重新开始',
-        fanhui: '返回整理',
+        fanhui: '提交数据',
         bjxq: '本局详情',
         lszj: '历史最佳',
         gameTime: '挑战时间:',

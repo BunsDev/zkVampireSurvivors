@@ -1,4 +1,5 @@
-import { web3Config } from "../config";
+import { web3Config, web3ContractConfig } from "../config";
+import { GameABI } from "./GameABI";
 
 const i18n = require("LanguageData");
 const Web3 = require("web3/dist/web3.min.js");
@@ -47,20 +48,33 @@ export default class Web3Mgr {
     this._address = value;
   }
 
+  protected _startTime: number = null;
+  public get StartTime() {
+    return this._startTime;
+  }
+  public set StartTime(value: number) {
+    this._startTime = value;
+  }
+
+  protected _endTime: number = null;
+  public get EndTime() {
+    return this._endTime;
+  }
+  public set EndTime(value: number) {
+    this._endTime = value;
+  }
+
   private web3Provider;
   private web3;
 
   private GameContract;
-  private VerifyContract;
-  private _lastProof;
-
   private currentAccount;
 
   async selectNetwork(network: string, networkMain: string) {
     let oldNetwork = this._network;
     this._network = network;
     this._networkMain = networkMain;
-
+    
     let wallet = this._wallet;
     let address = this._address;
     let isWalletAndAddressSelected =
@@ -73,6 +87,7 @@ export default class Web3Mgr {
             // const address = "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59";
             this._address = addr.slice(0, 6) + "..." + addr.slice(-4);
           })
+          await this.initContracts();
         } else {
           alert('Sorry, the game does not support this network！')
         }
@@ -118,28 +133,31 @@ export default class Web3Mgr {
           if (accounts.length == 0) {
             return;
           }
-          this.currentAccount = accounts[0];
           await this.web3.eth.getBalance(accounts[0],async (err, wei) => {
             if (!err) {
               let balance = my.web3.utils.fromWei(wei, "ether");
               console.log("balance:", balance);
               console.log("web3Provider:", my.web3Provider);
               console.log("web3:", my.web3);
-              // TODO: initContracts
+              this.currentAccount = accounts[0];
+              this.web3.eth.defaultAccount = accounts[0];
               callback(accounts[0]);
+              await this.initContracts();
             }
           });
           WinEthereum.on("accountsChanged", function (accounts) {
             if (accounts.length == 0) {
               return;
             }
-            console.log(accounts[0]);
-            my.currentAccount = accounts[0];
-            callback(accounts[0]);
-            my.web3.eth.getBalance(accounts[0], (err, wei) => {
+            my.web3.eth.getBalance(accounts[0], async (err, wei) => {
               if (!err) {
                 let balance = my.web3.utils.fromWei(wei, "ether");
                 console.log("balance:", balance);
+                console.log(accounts[0]);
+                my.currentAccount = accounts[0];
+                this.web3.eth.defaultAccount = accounts[0];
+                callback(accounts[0]);
+                await this.initContracts();
               }
             });
           });
@@ -158,6 +176,112 @@ export default class Web3Mgr {
     }
   }
 
+  async initContracts() {
+    let contractConfig = web3ContractConfig[this._network];
+    if(contractConfig != null) {
+      this.GameContract = new this.web3.eth.Contract(
+        GameABI,
+        contractConfig.gameAddress
+      );
+      await this.getTopListInfo(()=>{});
+      await this.getPlayerAllAssets(()=>{});
+    }
+  }
+
+  async getTopListInfo(callback: Function) {
+    if(this.GameContract) {
+      let res = await this.GameContract.methods.getTopListInfo().call();
+      console.log(res)
+      callback(res);
+    }
+  }
+  
+
+  async getPlayerAllAssets(callback: Function) {
+    if(this.GameContract) {
+      let res = await this.GameContract.methods.getPlayerAllAssets().call();
+      console.log(res)
+      callback(res);
+    }
+  }
+
+  async startGame(callback: Function) {
+    let my = this;
+    if (this.GameContract) {
+      this._startTime = null;
+      this._endTime = null;
+      // pay $1
+      let gasTokenAmount = await this.GameContract.methods.getGasTokenAmountByUsd(1).call();
+      console.log('ethAmount：',gasTokenAmount)
+      if(gasTokenAmount > 0) {
+        await this.GameContract.methods
+        .startGame()
+        .send({
+          from: my.currentAccount,
+          value: gasTokenAmount,
+        })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          callback();
+        })
+        .on("error", function (error) {
+          console.log(error);
+          alert("start game failed！");
+        });
+      } else {
+        alert("start game failed！");
+      }
+    }
+  }
+
+  async reLive(success: Function, fail: Function) {
+    let my = this;
+    if (this.GameContract) {
+      this._startTime = null;
+      this._endTime = null;
+      // pay $5
+      let gasTokenAmount = await this.GameContract.methods.getGasTokenAmountByUsd(5).call();
+      console.log('ethAmount：',gasTokenAmount)
+      if(gasTokenAmount > 0) {
+        await this.GameContract.methods
+        .reLive()
+        .send({
+          from: my.currentAccount,
+          value: gasTokenAmount,
+        })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          success();
+        })
+        .on("error", function (error) {
+          console.log(error);
+          alert("reLive failed！");
+          fail();
+        });
+      } else {
+        alert("reLive failed！");
+        fail();
+      }
+    }
+  }
+
+  async gameOver(callback: Function) {
+    let grade = this._endTime - this._startTime;
+    console.log('this._startTime:', this._startTime)
+    console.log('this._endTime:', this._endTime)
+    console.log('grade:', grade)
+    let my = this;
+    this.GameContract.methods
+      .gameOver(grade)
+      .send({ from: my.currentAccount })
+      .on("receipt", function (receipt) {
+        callback();
+      })
+      .on("error", function (error) {
+        alert("submit failed！")
+        callback();
+      });
+  }
 
 
   // metamask

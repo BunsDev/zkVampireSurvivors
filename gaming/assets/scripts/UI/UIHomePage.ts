@@ -347,7 +347,7 @@ export default class UIHomePage extends UIPage {
 
     switch (event.target.name) {
       case "BtnGameStart": {
-        cocosz.gameMgr.gameStart(cocosz.getLevelId());
+        cocosz.web3Mgr.startGame(()=>cocosz.gameMgr.gameStart(cocosz.getLevelId()));
         break;
       }
 
