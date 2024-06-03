@@ -283,6 +283,45 @@ export default class Web3Mgr {
       });
   }
 
+  async requestLottery(success: Function) {
+    let my = this;
+    if (this.GameContract) {
+      this._startTime = null;
+      this._endTime = null;
+      // pay $4
+      let gasTokenAmount = await this.GameContract.methods.getGasTokenAmountByUsd(4).call();
+      console.log('ethAmount：',gasTokenAmount)
+      if(gasTokenAmount > 0) {
+        await this.GameContract.methods
+        .requestLottery()
+        .send({
+          from: my.currentAccount,
+          value: gasTokenAmount,
+        })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          success();
+        })
+        .on("error", function (error) {
+          console.log(error);
+          alert("requestLottery failed！");
+        });
+      } else {
+        alert("requestLottery failed！");
+      }
+    }
+  }
+
+  
+  async getPlayerLastLotteryRequestStatus(callback: Function) {
+    if(this.GameContract) {
+      let res = await this.GameContract.methods.getPlayerLastLotteryRequestStatus().call();
+      console.log(res)
+      callback(res);
+    }
+  }
+  
+
 
   // metamask
 

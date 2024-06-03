@@ -110,27 +110,23 @@ export default class UITurntablePanel extends UIPage {
     }
   }
 
-  startNum: number = 0;
+  lotteryItem: any = null;
   CJ() {
+    this.lotteryItem = null;
     this.isCJ = true;
-    let num = 20;
-    num += Math.floor(Math.random() * 12);
     let count = 0;
-    let lastNum = this.startNum;
-    let cur = 0;
     cocosz.audioMgr.playEffect("turntable");
     let timeCount = setInterval(() => {
+      this._rewardList.children[count % 12].children[0].opacity = 0;
       count++;
-      if (this.getTimeCount(count, cur) == 0) {
-        this._rewardList.children[lastNum].children[0].opacity = 0;
-        lastNum++;
-        if (lastNum >= 12) {
-          lastNum = 0;
-        }
-        cur++;
-        this._rewardList.children[lastNum].children[0].opacity = 255;
-        if (cur >= num) {
-          this.startNum = lastNum;
+      let lastNum = count % 12;
+      this._rewardList.children[lastNum].children[0].opacity = 255;
+      if (this.lotteryItem != null) {
+        let item = GameDate.TurntableReward[lastNum];
+        if (
+          item.type == this.lotteryItem["itemType"] &&
+          item.num == this.lotteryItem["num"]
+        ) {
           clearInterval(timeCount);
           if (GameDate.TurntableReward[lastNum].type == RewardType.Gold) {
             Msg.Show(
@@ -169,7 +165,7 @@ export default class UITurntablePanel extends UIPage {
           cocosz.totalCJTimes++;
         }
       }
-    }, 10);
+    }, 30);
   }
 
   startIntervalTime: number = 10;
@@ -193,7 +189,17 @@ export default class UITurntablePanel extends UIPage {
         break;
       }
       case "BtnCJ": {
-        this.CJ();
+        cocosz.web3Mgr.requestLottery(() => {
+          this.CJ();
+          let timeCount = setInterval(() => {
+            cocosz.web3Mgr.getPlayerLastLotteryRequestStatus((result) => {
+              if (result["fulfilled"] == true) {
+                this.lotteryItem = result["lotteryItem"];
+                clearInterval(timeCount);
+              }
+            });
+          }, 4000);
+        });
         break;
       }
     }
