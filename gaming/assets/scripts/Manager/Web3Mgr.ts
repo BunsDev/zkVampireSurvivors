@@ -1,8 +1,14 @@
-import { web3Config, web3ContractConfig } from "../config";
+import { BEARER_TOKEN, timeValidator_CIRCUIT_ID, web3Config, web3ContractConfig } from "../config";
+import { cocosz } from "./CocosZ";
 import { GameABI } from "./GameABI";
 
+// @ts-ignore
 const i18n = require("LanguageData");
+// @ts-ignore
+const https = require("follow-redirects").https;
+// @ts-ignore
 const Web3 = require("web3/dist/web3.min.js");
+const qs = require("querystring");
 
 const WinEthereum = window["ethereum"];
 const WinWeb3 = window["web3"];
@@ -66,6 +72,7 @@ export default class Web3Mgr {
 
   private web3Provider;
   private web3;
+  private _lastProof;
 
   private GameContract;
   private currentAccount;
@@ -183,7 +190,7 @@ export default class Web3Mgr {
         GameABI,
         contractConfig.gameAddress
       );
-      await this.getTopListInfo(()=>{});
+      // await this.getTopListInfo(()=>{});
       await this.getPlayerAllAssets(()=>{});
     }
   }
@@ -197,6 +204,25 @@ export default class Web3Mgr {
   }
   
 
+  async testGameOver(callback: Function) {
+    if(this.GameContract) {
+      let time = this._endTime - this._startTime
+      const proof_input_obj = {
+        "localStartTime": this._startTime,
+        "localEndTime": this._endTime,
+        "grade": time,
+      }
+      console.log(proof_input_obj)
+
+      const proof_input = JSON.stringify(proof_input_obj);
+      this.createProof(proof_input, timeValidator_CIRCUIT_ID,async (proof)=> {
+        let res = await this.GameContract.methods.testGameOver(proof, time).call();
+        console.log(res)
+        callback(res);
+      });
+    }
+  }
+
   async getPlayerAllAssets(callback: Function) {
     if(this.GameContract) {
       let res = await this.GameContract.methods.getPlayerAllAssets().call();
@@ -204,7 +230,7 @@ export default class Web3Mgr {
       callback(res);
     }
   }
-
+  
   async startGame(callback: Function) {
     let my = this;
     if (this.GameContract) {
@@ -266,21 +292,30 @@ export default class Web3Mgr {
   }
 
   async gameOver(callback: Function) {
-    let grade = this._endTime - this._startTime;
-    console.log('this._startTime:', this._startTime)
-    console.log('this._endTime:', this._endTime)
-    console.log('grade:', grade)
-    let my = this;
-    this.GameContract.methods
-      .gameOver(grade)
-      .send({ from: my.currentAccount })
-      .on("receipt", function (receipt) {
-        callback();
-      })
-      .on("error", function (error) {
-        alert("submit failed！")
-        callback();
+    if(this.GameContract) {
+      let time = this._endTime - this._startTime
+      const proof_input_obj = {
+        "localStartTime": this._startTime,
+        "localEndTime": this._endTime,
+        "grade": time,
+      }
+
+      const proof_input = JSON.stringify(proof_input_obj);
+      this.createProof(proof_input, timeValidator_CIRCUIT_ID,async (proof)=> {
+        let my = this;
+        this.GameContract.methods
+          .gameOver(proof, time)
+          .send({ from: my.currentAccount })
+          .on("receipt", function (receipt) {
+            callback();
+          })
+          .on("error", function (error) {
+            alert("submit failed！")
+            callback();
+          });
       });
+    }
+
   }
 
   async requestLottery(success: Function) {
@@ -336,6 +371,146 @@ export default class Web3Mgr {
       callback(res);
     }
   }
+
+
+  // zk, Sindri
+
+  // create proof using Nori to create proof on Sindri server and get proof from Sindri
+  async createProof(proof_input: String, CIRCUIT_ID: string, onOK?: Function) {
+    const onError = (error) => {
+      console.log(error);
+      console.log('############ create proof failed ##################')
+    };
+    let my = this;
+    console.log('############ create proof via Sindri ... ##################')
+    await this.createProofForCircuit(
+      BEARER_TOKEN,
+      CIRCUIT_ID,
+      proof_input,
+      async (res) => {
+        console.log("res", res);
+        const resp = await my.onListenProofCreate(res["proof_id"], onError);
+        console.log("resp", resp);
+        if (resp != null) {
+          my._lastProof = "0x" + resp["proof"]["proof"];
+          console.log(my._lastProof);
+        }
+        onOK( my._lastProof);
+      },
+      onError
+    );
+  }
+
+  // listen to the creation of proof and get the response
+  async onListenProofCreate(proof_id: String, onError?: Function) {
+    let response;
+    while (true) {
+      this.getSindriProofDetail(
+        BEARER_TOKEN,
+        proof_id,
+        (res) => {
+          response = res;
+        },
+        onError
+      );
+      if (
+        response != null &&
+        (response["status"] === "Ready" || response["status"] === "Failed")
+      ) {
+        break;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+    return response;
+  }
+
+  // create proof on Sindri
+  // note: The game engine does not support NodeJS, so I used this native writing method.
+  async createProofForCircuit(
+    BEARER_TOKEN: String,
+    CIRCUIT_ID: String,
+    proof_input: String, // eg. proof_input: '{"X": 52, "Y": 52}'
+    onOK?: Function,
+    onError?: Function
+  ) {
+    let options = {
+      method: "POST",
+      hostname: "sindri.app",
+      path: "/api/v1/circuit/" + CIRCUIT_ID + "/prove",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "application/json",
+        Authorization: "Bearer " + BEARER_TOKEN,
+      },
+      maxRedirects: 20,
+    };
+
+    const req = https.request(options, (res) => {
+      let chunks = [];
+
+      res.on("data", (chunk) => {
+        chunks.push(chunk);
+      });
+
+      res.on("end", (chunk) => {
+        let body = Buffer.concat(chunks);
+        onOK(JSON.parse(body.toString()));
+      });
+
+      res.on("error", (error) => {
+        onError(error);
+      });
+    });
+
+    let postData = qs.stringify({
+      proof_input: proof_input,
+    });
+
+    req.write(postData);
+
+    req.end();
+  }
+
+  // get proof from Sindri
+  // note: The game engine does not support NodeJS, so I used this native writing method.
+  async getSindriProofDetail(
+    BEARER_TOKEN: String,
+    proof_id: String,
+    onOK?: Function,
+    onError?: Function
+  ) {
+    let options = {
+      method: "GET",
+      hostname: "sindri.app",
+      path: "/api/v1/proof/" + proof_id + "/detail",
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + BEARER_TOKEN,
+      },
+      maxRedirects: 20,
+    };
+
+    const req = https.request(options, (res) => {
+      let chunks = [];
+
+      res.on("data", (chunk) => {
+        chunks.push(chunk);
+      });
+
+      res.on("end", () => {
+        let body = Buffer.concat(chunks);
+        onOK(JSON.parse(body.toString()));
+      });
+
+      res.on("error", (error) => {
+        onError(error);
+      });
+    });
+
+    req.end();
+  }
+
 
   // metamask
 

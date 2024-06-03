@@ -26,6 +26,15 @@ interface AggregatorV3Interface {
     returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
 }
 
+interface IUltraVerifier {
+    function getVerificationKeyHash() external pure returns (bytes32);
+
+    function verify(
+        bytes calldata _proof,
+        bytes32[] calldata _publicInputs
+    ) external view returns (bool);
+}
+
 contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
     struct MessageItem {
         address player;
@@ -126,6 +135,11 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         0x5498BB86BC934c8D34FDA08E81D444153d0D06aD, // Avalanche Fuji testnet AVAX/USD
         0x001382149eBa3441043c1c66972b4772963f5D43 // Polygon Amoy testnet MATIC/USD
     ];
+    address[3] public zkTimeProofAddressList = [
+        0x349b5C479E59467903cf7dc094702bF97fa6AF4e, // Ethereum Sepolia testnet ETH/USD
+        0x349b5C479E59467903cf7dc094702bF97fa6AF4e, // Avalanche Fuji testnet AVAX/USD // TODO
+        0x349b5C479E59467903cf7dc094702bF97fa6AF4e // Polygon Amoy testnet MATIC/USD // TODO
+    ];
      // receiver contract List
     address[3] public receivers;
 
@@ -214,11 +228,11 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         }
     }
 
-    function testWeaponSkin() external  {
-        playerWeaponMap[msg.sender].push(5);
-        playerWeaponMap[msg.sender].push(15);
-        playerSkinMap[msg.sender].push(2);
-    }
+    // function testWeaponSkin() external  {
+    //     playerWeaponMap[msg.sender].push(5);
+    //     playerWeaponMap[msg.sender].push(15);
+    //     playerSkinMap[msg.sender].push(2);
+    // }
 
     function getPlayerAllWeaponInfo() external view returns(uint[] memory weaponIdList, uint[] memory weaponLevelList) {
         weaponIdList = playerWeaponMap[msg.sender];
@@ -356,10 +370,15 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         }
     }
 
-
-    function gameOver(uint time) external {
-        // TODO: verify data
-        // verify(bytes calldata _proof, bytes32[] calldata _publicInputs)
+    function gameOver(bytes calldata proof, uint time) external {
+        // zk: verify data
+        bytes32[] memory publicInputs = new bytes32[](1);
+        publicInputs[0] = bytes32(time);
+        address tradingVerifierAddress = zkTimeProofAddressList[currentChainSelectorIndex];
+        require(tradingVerifierAddress != address(0),"VerificationKeyHash is invalid!");
+        IUltraVerifier tradingVerifier = IUltraVerifier(tradingVerifierAddress);
+        bool verify = tradingVerifier.verify(proof, publicInputs);
+        require(verify, "Verify failed!");
 
         // save data
         uint logId = playerLatestGameLogIdMap[msg.sender];
@@ -489,7 +508,7 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         lastUpdateTime = block.timestamp;
     }
 
-    function getTopListInfo() public view returns (uint[10] memory, uint[10] memory, address[10] memory, uint) {
+    function getTopListInfo() public view returns (uint[10] memory , uint[10] memory, address[10] memory, uint) {
         return (topGradeList, topChainIndex, topPlayerList, lastUpdateTime);
     }
 

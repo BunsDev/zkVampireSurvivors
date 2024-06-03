@@ -1,2 +1,2 @@
-timeValidator id: 25c9880a-4939-451a-8a1e-e401823ed8e6
+timeValidator id: 70811d8a-fd42-4176-abf0-09a0484a23eb
 upgradingValidator id: 9a208377-bf75-4fc0-9169-dceef5ecd509

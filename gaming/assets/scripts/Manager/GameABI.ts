@@ -504,6 +504,11 @@ export const GameABI = [
 	{
 		"inputs": [
 			{
+				"internalType": "bytes",
+				"name": "proof",
+				"type": "bytes"
+			},
+			{
 				"internalType": "uint256",
 				"name": "time",
 				"type": "uint256"
@@ -1091,13 +1096,6 @@ export const GameABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "testWeaponSkin",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -1209,6 +1207,25 @@ export const GameABI = [
 			}
 		],
 		"name": "wrapperAddressList",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "zkTimeProofAddressList",
 		"outputs": [
 			{
 				"internalType": "address",

@@ -33,7 +33,7 @@ export const web3Config = {
 
 export const web3ContractConfig = {
   'Ethereum Sepolia testnet': {
-      gameAddress: '0x1737FE10237922c1e32cbEcA5394eCa5dF8562A7'
+      gameAddress: '0x4828D9fc865c37da0d10e2bc8F6461690eAbf4f1'
   },
   'Avalanche Fuji testnet': {
     gameAddress: ''
@@ -42,3 +42,7 @@ export const web3ContractConfig = {
     gameAddress: ''
   },
 }
+
+// zk, Sindri
+export const  BEARER_TOKEN = "sindri_FU1t47kuCWy55EeiYotj9EysFiKj2AIX_07c4";
+export const  timeValidator_CIRCUIT_ID = "70811d8a-fd42-4176-abf0-09a0484a23eb";
