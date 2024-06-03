@@ -810,6 +810,13 @@ export const GameABI = [
 	},
 	{
 		"inputs": [],
+		"name": "mintGold",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "owner",
 		"outputs": [
 			{

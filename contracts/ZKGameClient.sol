@@ -282,6 +282,11 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         }
     }
 
+    function mintGold()  external payable {
+        uint gasTokenAmountToPay = getGasTokenAmountByUsd(1); // $1
+        require(msg.value >= gasTokenAmountToPay,"Gas Token is not enough!");
+        playerGoldMap[msg.sender] += 500;
+    }
 
     // lottery
     function requestLottery() external payable returns (uint256) {

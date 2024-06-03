@@ -70,6 +70,22 @@ export default class Web3Mgr {
     this._endTime = value;
   }
 
+  protected _diamond: number = null;
+  public get diamond() {
+    return this._diamond;
+  }
+  public set diamond(value: number) {
+    this._diamond = value;
+  }
+
+  protected _gold: number = null;
+  public get gold() {
+    return this._gold;
+  }
+  public set gold(value: number) {
+    this._gold = value;
+  }
+
   private web3Provider;
   private web3;
   private _lastProof;
@@ -202,31 +218,13 @@ export default class Web3Mgr {
       callback(res);
     }
   }
-  
-
-  async testGameOver(callback: Function) {
-    if(this.GameContract) {
-      let time = this._endTime - this._startTime
-      const proof_input_obj = {
-        "localStartTime": this._startTime,
-        "localEndTime": this._endTime,
-        "grade": time,
-      }
-      console.log(proof_input_obj)
-
-      const proof_input = JSON.stringify(proof_input_obj);
-      this.createProof(proof_input, timeValidator_CIRCUIT_ID,async (proof)=> {
-        let res = await this.GameContract.methods.testGameOver(proof, time).call();
-        console.log(res)
-        callback(res);
-      });
-    }
-  }
 
   async getPlayerAllAssets(callback: Function) {
     if(this.GameContract) {
       let res = await this.GameContract.methods.getPlayerAllAssets().call();
       console.log(res)
+      this._gold = parseInt(res["gold"]);
+      this._diamond = parseInt(res["diamond"]);
       callback(res);
     }
   }
@@ -256,6 +254,35 @@ export default class Web3Mgr {
         });
       } else {
         alert("start game failed！");
+      }
+    }
+  }
+
+  async mintGold(success: Function, fail: Function) {
+    let my = this;
+    if (this.GameContract) {
+      // pay $1
+      let gasTokenAmount = await this.GameContract.methods.getGasTokenAmountByUsd(1).call();
+      console.log('ethAmount：',gasTokenAmount)
+      if(gasTokenAmount > 0) {
+        await this.GameContract.methods
+        .mintGold()
+        .send({
+          from: my.currentAccount,
+          value: gasTokenAmount,
+        })
+        .on("receipt", function (receipt) {
+          console.log(receipt);
+          success();
+        })
+        .on("error", function (error) {
+          console.log(error);
+          alert("reLive failed！");
+          fail();
+        });
+      } else {
+        alert("reLive failed！");
+        fail();
       }
     }
   }
@@ -315,7 +342,38 @@ export default class Web3Mgr {
           });
       });
     }
+  }
 
+  async buyOrUpgradeSkin(id:number, success: Function, fail: Function) {
+    if(this.GameContract) {
+      let my = this;
+        this.GameContract.methods
+          .buyOrUpgradeSkin(id)
+          .send({ from: my.currentAccount })
+          .on("receipt", function (receipt) {
+            success();
+          })
+          .on("error", function (error) {
+            alert("failed！")
+            fail();
+          });
+    }
+  }
+
+  async buyOrUpgradeWeapon(id:number, success: Function, fail: Function) {
+    if(this.GameContract) {
+      let my = this;
+        this.GameContract.methods
+          .buyOrUpgradeWeapon(id)
+          .send({ from: my.currentAccount })
+          .on("receipt", function (receipt) {
+            success();
+          })
+          .on("error", function (error) {
+            alert("failed！")
+            fail();
+          });
+    }
   }
 
   async requestLottery(success: Function) {

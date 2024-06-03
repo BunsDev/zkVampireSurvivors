@@ -347,7 +347,9 @@ export default class UIHomePage extends UIPage {
 
     switch (event.target.name) {
       case "BtnGameStart": {
-        cocosz.web3Mgr.startGame(()=>cocosz.gameMgr.gameStart(cocosz.getLevelId()));
+        cocosz.web3Mgr.startGame(() =>
+          cocosz.gameMgr.gameStart(cocosz.getLevelId())
+        );
         break;
       }
 
@@ -367,13 +369,21 @@ export default class UIHomePage extends UIPage {
         if (showSkinInfo.State == 0) {
           if (GameDate.SkinMess[showSKinKey].priceType == PriceType.Gold) {
             if (
-              cocosz.dataMgr.CoinCount >= GameDate.SkinMess[showSKinKey].price
+              cocosz.web3Mgr.getTopListInfo >=
+              GameDate.SkinMess[showSKinKey].price
             ) {
-              cocosz.dataMgr.CoinCount -= GameDate.SkinMess[showSKinKey].price;
-              Msg.Show(i18n.t("msg.gxhdxjs"));
-              cocosz.dataMgr.CurSkinId = this._showSkinId;
-              this._updatePlayer();
               this._aniEffect(2);
+              cocosz.web3Mgr.buyOrUpgradeSkin(
+                this._showSkinId,
+                () => {
+                  cocosz.dataMgr.CoinCount -=
+                    GameDate.SkinMess[showSKinKey].price;
+                  Msg.Show(i18n.t("msg.gxhdxjs"));
+                  cocosz.dataMgr.CurSkinId = this._showSkinId;
+                  this._updatePlayer();
+                },
+                () => {}
+              );
             } else {
               this.showCoinPanel(false);
             }
@@ -381,30 +391,41 @@ export default class UIHomePage extends UIPage {
             GameDate.SkinMess[showSKinKey].priceType == PriceType.Diamond
           ) {
             if (
-              cocosz.dataMgr.DiamondCount >=
-              GameDate.SkinMess[showSKinKey].price
+              cocosz.web3Mgr.diamond >= GameDate.SkinMess[showSKinKey].price
             ) {
-              cocosz.dataMgr.DiamondCount -=
-                GameDate.SkinMess[showSKinKey].price;
-              Msg.Show(i18n.t("msg.gxhdxjs"));
-              cocosz.dataMgr.CurSkinId = this._showSkinId;
-              this._updatePlayer();
               this._aniEffect(2);
+              cocosz.web3Mgr.buyOrUpgradeSkin(
+                this._showSkinId,
+                () => {
+                  cocosz.dataMgr.DiamondCount -=
+                    GameDate.SkinMess[showSKinKey].price;
+                  Msg.Show(i18n.t("msg.gxhdxjs"));
+                  cocosz.dataMgr.CurSkinId = this._showSkinId;
+                  this._updatePlayer();
+                },
+                () => {}
+              );
             } else {
               this.showCoinPanel(true);
             }
           }
         } else if (showSkinInfo.Level < 6) {
           if (
-            cocosz.dataMgr.CoinCount >=
+            cocosz.web3Mgr.gold >=
             Constant.skinLevelPriceArr[showSkinInfo.Level]
           ) {
-            cocosz.dataMgr.CoinCount -=
-              Constant.skinLevelPriceArr[showSkinInfo.Level];
-            showSkinInfo.Level++;
-            cocosz.dataMgr.setSkinInfo(showSkinInfo.Id, showSkinInfo);
-            this._updatePlayer();
             this._aniEffect(1);
+            cocosz.web3Mgr.buyOrUpgradeSkin(
+              this._showSkinId,
+              () => {
+                cocosz.dataMgr.CoinCount -=
+                  Constant.skinLevelPriceArr[showSkinInfo.Level];
+                showSkinInfo.Level++;
+                cocosz.dataMgr.setSkinInfo(showSkinInfo.Id, showSkinInfo);
+                this._updatePlayer();
+              },
+              () => {}
+            );
           } else {
             this.showCoinPanel(false);
           }
@@ -417,15 +438,20 @@ export default class UIHomePage extends UIPage {
         let showWeaponKey = Weapon.WeaponName[this._showWeaponId];
         if (showWeaponInfo.State == 0) {
           if (GameDate.Weapon[showWeaponKey].priceType == PriceType.Gold) {
-            if (
-              cocosz.dataMgr.CoinCount >= GameDate.Weapon[showWeaponKey].price
-            ) {
-              cocosz.dataMgr.CoinCount -= GameDate.Weapon[showWeaponKey].price;
-              Msg.Show(i18n.t("msg.gxhdxwq"));
-              cocosz.dataMgr.curWeapon = this._showWeaponId;
-              this._updateWeapon();
-              this._updateWeaponFrame();
+            if (cocosz.web3Mgr.gold >= GameDate.Weapon[showWeaponKey].price) {
               this._aniEffect(2);
+              cocosz.web3Mgr.buyOrUpgradeWeapon(
+                this._showWeaponId,
+                () => {
+                  cocosz.dataMgr.CoinCount -=
+                    GameDate.Weapon[showWeaponKey].price;
+                  Msg.Show(i18n.t("msg.gxhdxwq"));
+                  cocosz.dataMgr.curWeapon = this._showWeaponId;
+                  this._updateWeapon();
+                  this._updateWeaponFrame();
+                },
+                () => {}
+              );
             } else {
               this.showCoinPanel(false);
             }
@@ -433,32 +459,43 @@ export default class UIHomePage extends UIPage {
             GameDate.Weapon[showWeaponKey].priceType == PriceType.Diamond
           ) {
             if (
-              cocosz.dataMgr.DiamondCount >=
-              GameDate.Weapon[showWeaponKey].price
+              cocosz.web3Mgr.diamond >= GameDate.Weapon[showWeaponKey].price
             ) {
-              cocosz.dataMgr.DiamondCount -=
-                GameDate.Weapon[showWeaponKey].price;
-              Msg.Show(i18n.t("msg.gxhdxwq"));
-              cocosz.dataMgr.curWeapon = this._showWeaponId;
-              this._updateWeapon();
-              this._updateWeaponFrame();
               this._aniEffect(2);
+              cocosz.web3Mgr.buyOrUpgradeWeapon(
+                this._showWeaponId,
+                () => {
+                  cocosz.dataMgr.DiamondCount -=
+                    GameDate.Weapon[showWeaponKey].price;
+                  Msg.Show(i18n.t("msg.gxhdxwq"));
+                  cocosz.dataMgr.curWeapon = this._showWeaponId;
+                  this._updateWeapon();
+                  this._updateWeaponFrame();
+                },
+                () => {}
+              );
             } else {
               this.showCoinPanel(true);
             }
           }
         } else if (showWeaponInfo.Level < 3) {
           if (
-            cocosz.dataMgr.CoinCount >=
+            cocosz.web3Mgr.gold >=
             Constant.weaponLevelPriceArr[showWeaponInfo.Level]
           ) {
-            cocosz.dataMgr.CoinCount -=
-              Constant.weaponLevelPriceArr[showWeaponInfo.Level];
-            showWeaponInfo.Level++;
-            cocosz.dataMgr.setGunInfo(showWeaponInfo.Id, showWeaponInfo);
-            this._updateWeapon();
-            this._updateWeaponFrame();
             this._aniEffect(1);
+            cocosz.web3Mgr.buyOrUpgradeWeapon(
+              this._showWeaponId,
+              () => {
+                cocosz.dataMgr.CoinCount -=
+                  Constant.weaponLevelPriceArr[showWeaponInfo.Level];
+                showWeaponInfo.Level++;
+                cocosz.dataMgr.setGunInfo(showWeaponInfo.Id, showWeaponInfo);
+                this._updateWeapon();
+                this._updateWeaponFrame();
+              },
+              () => {}
+            );
           } else {
             this.showCoinPanel(false);
           }
@@ -503,10 +540,10 @@ export default class UIHomePage extends UIPage {
         break;
       }
       case "BtnWeapon": {
-        cocosz.web3Mgr.getPlayerAllWeaponInfo((result)=>{
+        cocosz.web3Mgr.getPlayerAllWeaponInfo((result) => {
           let weaponIdList = result["weaponIdList"];
           let weaponLevelList = result["weaponLevelList"];
-          for(let i=0; i<weaponIdList.length; i++) {
+          for (let i = 0; i < weaponIdList.length; i++) {
             let weaponId = weaponIdList[i];
             let weaponLevel = weaponLevelList[i];
             let showWeaponInfo = cocosz.dataMgr.getGunInfo(weaponId);
@@ -521,13 +558,13 @@ export default class UIHomePage extends UIPage {
         break;
       }
       case "BtnSkin": {
-        cocosz.web3Mgr.getPlayerAllSkinInfo((result)=>{
+        cocosz.web3Mgr.getPlayerAllSkinInfo((result) => {
           homeNode.active = false;
           weaponNode.active = false;
           skinNode.active = true;
           let skinIdList = result["skinIdList"];
           let skinLevelList = result["skinLevelList"];
-          for(let i=0; i<skinIdList.length; i++) {
+          for (let i = 0; i < skinIdList.length; i++) {
             let skinId = skinIdList[i];
             let skinLevel = skinLevelList[i];
             let skinInfo = cocosz.dataMgr.getSkinInfo(skinId);

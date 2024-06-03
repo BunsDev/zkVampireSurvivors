@@ -47,13 +47,22 @@ export default class NewClass extends cc.Component {
 
   watchAD() {
     if (this.isDiamond) {
-      let num = cocosz.isDeBug ? 10000 : 200;
-      cocosz.dataMgr.DiamondCount += num;
-      Msg.Show(i18n.t("msg.gxhdzs") + num);
+      cocosz.web3Mgr.mintGold(()=>{
+        let num = 500;
+        cocosz.dataMgr.DiamondCount += num;
+        Msg.Show(i18n.t("msg.gxhdzs") + num);
+      },()=>{
+
+      });
+      
     } else {
-      let num = cocosz.isDeBug ? 10000 : 500;
-      cocosz.dataMgr.CoinCount += num;
-      Msg.Show(i18n.t("msg.gxhdjb") + num);
+      cocosz.web3Mgr.mintGold(()=>{
+        let num = 500;
+        cocosz.dataMgr.DiamondCount += num;
+        Msg.Show(i18n.t("msg.gxhdzs") + num);
+      },()=>{
+
+      });
     }
     this.node.destroy();
   }

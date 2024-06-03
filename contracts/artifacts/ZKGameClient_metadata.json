@@ -816,6 +816,13 @@
 			},
 			{
 				"inputs": [],
+				"name": "mintGold",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "owner",
 				"outputs": [
 					{
@@ -1424,11 +1431,11 @@
 			]
 		},
 		"ZKGameClient.sol": {
-			"keccak256": "0xf3a581fb6038ff1e45e469a7f8e02f217a1455e17000fa135ae46834e445be69",
+			"keccak256": "0xb50a3e71287c6574188be9b3454bd146ab336e89b7ac2903e81e431999c74b5f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://66c567793c4239e62cf162976411e089d355f38b708a514824a2d3697d025770",
-				"dweb:/ipfs/QmSTjdvkmW87jFFB3y4Bg1oKLhGDxgdfSHfip65Xfv747c"
+				"bzz-raw://af611491f9afe2b74587cdef42fec22ce3f8e3f230ce43b3d36e633eba23d893",
+				"dweb:/ipfs/QmXRVAey6JUFL5stqbckJASUCfWHTymtdgvo6JdhCsXvv4"
 			]
 		}
 	},
