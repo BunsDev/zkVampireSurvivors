@@ -244,8 +244,9 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
     }
 
     // lottery
-    function requestLottery() external onlyOwner returns (uint256) {
-        // TODO: pay $1
+    function requestLottery() external payable returns (uint256) {
+        uint gasTokenAmountToPay = getGasTokenAmountByUsd(4); // $4
+        require(msg.value >= gasTokenAmountToPay,"Gas Token is not enough!");
 
         bytes memory extraArgs = VRFV2PlusClient._argsToBytes(
             VRFV2PlusClient.ExtraArgsV1({nativePayment: false}) // use Link token
