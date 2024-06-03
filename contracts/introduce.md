@@ -4,7 +4,7 @@ step 1: deploy contract with _currentChainSelectorIndex
 step 2: send LinkToken to this contract
 loop....
 step 3: updateReceivers
-[0x52a2531D619de64435817cDd68f020d54c4a7487,0x2A246afFf42559bD984A440428ad935670CAEF61,0xaf696064B5f968c688a893df21B7A53f87f85ceF]
+["0x601a1299435b006a41d7498b40720EEf9b5991A1","0x793425DD140f50a9be395A3B628c704c4D969cCb","0x2A246afFf42559bD984A440428ad935670CAEF61"]
 
 // Ethereum Sepolia testnet
 contract address: 0x52a2531D619de64435817cDd68f020d54c4a7487

@@ -137,8 +137,8 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
     ];
     address[3] public zkTimeProofAddressList = [
         0x349b5C479E59467903cf7dc094702bF97fa6AF4e, // Ethereum Sepolia testnet ETH/USD
-        0x349b5C479E59467903cf7dc094702bF97fa6AF4e, // Avalanche Fuji testnet AVAX/USD // TODO
-        0x349b5C479E59467903cf7dc094702bF97fa6AF4e // Polygon Amoy testnet MATIC/USD // TODO
+        0x52a2531D619de64435817cDd68f020d54c4a7487, // Avalanche Fuji testnet AVAX/USD // TODO
+        0x0381c70245e94462c2B549dF3586DD33d5E6C45E // Polygon Amoy testnet MATIC/USD // TODO
     ];
      // receiver contract List
     address[3] public receivers;
