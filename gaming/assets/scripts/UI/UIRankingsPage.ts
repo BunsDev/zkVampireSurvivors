@@ -27,7 +27,7 @@ export default class UIRankingsPanel extends UIPage {
     }
   }
 
-      // 0: Ethereum Sepolia testnet
+    // 0: Ethereum Sepolia testnet
     // 1: Avalanche Fuji testnet
     // 2: Polygon Amoy testnet
   getChainNameByIndex(index) {
@@ -42,49 +42,82 @@ export default class UIRankingsPanel extends UIPage {
     return 'ethereum';
   }
 
+  parseGameTime(time) {
+    let h = Math.floor(time / 3600000);
+    let m = Math.floor((time % 3600000) / 60000);
+    let s = Math.floor((time % 60000) / 1000);
+
+    let r = "";
+    if (h !== 0) {
+        r += h + ":";
+    }
+    r += m < 10 ? "0" + m : m;
+    r += ":";
+    r += s < 10 ? "0" + s : s;
+    return r;
+}
+
+formatTime(timestamp:string) {
+  let date = new Date(parseInt(timestamp) * 1000);
+
+  return date.toLocaleString('en-US', {
+    hourCycle: "h24",
+  });
+}
+
   protected onOpen(): void {
     this._panel.scale = 0;
     cc.tween(this._panel).to(0.3, { scale: 1 }, { easing: "backOut" }).start();
 
-    let rankingsList = []
+    
     cocosz.web3Mgr.getTopListInfo((result)=>{
+      let rankingsList = []
       let topGradeList = result[0];
       let topChainIndex = result[1];
       let topPlayerList = result[2];
       let lastUpdateTime = result[3];
       for(let i=0; i<10;i++) {
-        if(topGradeList[i]>0) {
+        let grade = parseInt(topGradeList[i]);
+        if(grade>0) {
           rankingsList.push(
             {
               'chain': this.getChainNameByIndex(topChainIndex[i]),
               'address': topPlayerList[i],
-              'grade': topGradeList[i],
+              'grade': grade,
             }
           )
         }
       }
+
+      if(lastUpdateTime != null && lastUpdateTime != "") {
+        let timeStr = this.formatTime(lastUpdateTime);
+        let timeNode = cc.find("panel/latestTime", this._page);
+        timeNode.getComponent(cc.Label).string = "Last updated on   " + timeStr;
+        timeNode.active = true;
+      }
+
+      rankingsList.sort((a, b) => b.grade - a.grade);
+
+  
+      let list = cc.find("panel/list", this._page);
+      let content = cc.find("view/content", list);
+      for (let i = 0; i < rankingsList.length; i++) {
+        let pre = cocosz.resMgr.getRes("RankingListItem", cc.Prefab);
+        const instance: cc.Node = cc.instantiate(pre);
+  
+        instance.getChildByName("icon").getComponent(cc.Sprite).spriteFrame =
+          cocosz.resMgr.getRes(rankingsList[i].chain + "_logo", cc.SpriteFrame);
+        let address = rankingsList[i].address;
+        instance.getChildByName("rank").getComponent(cc.Label).string =
+          "NO." + (i + 1);
+        instance.getChildByName("address").getComponent(cc.Label).string =
+          address.slice(0, 6) + "..." + address.slice(-4);
+        instance.getChildByName("grade").getComponent(cc.Label).string =
+          this.parseGameTime(rankingsList[i].grade);
+  
+        instance.parent = content;
+      }
     });
-
-    rankingsList.sort((a, b) => b.grade - a.grade);
-
-    let list = cc.find("panel/list", this._page);
-    let content = cc.find("view/content", list);
-    for (let i = 0; i < rankingsList.length; i++) {
-      let pre = cocosz.resMgr.getRes("RankingListItem", cc.Prefab);
-      const instance: cc.Node = cc.instantiate(pre);
-
-      instance.getChildByName("icon").getComponent(cc.Sprite).spriteFrame =
-        cocosz.resMgr.getRes(rankingsList[i].chain + "_logo", cc.SpriteFrame);
-      let address = rankingsList[i].address;
-      instance.getChildByName("rank").getComponent(cc.Label).string =
-        "NO." + (i + 1);
-      instance.getChildByName("address").getComponent(cc.Label).string =
-        address.slice(0, 6) + "..." + address.slice(-4);
-      instance.getChildByName("grade").getComponent(cc.Label).string =
-        rankingsList[i].grade.toString();
-
-      instance.parent = content;
-    }
   }
 
   protected async _onBtnClickHandler(event: cc.Event.EventTouch) {
