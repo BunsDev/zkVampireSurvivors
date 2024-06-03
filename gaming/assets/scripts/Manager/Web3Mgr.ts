@@ -321,7 +321,21 @@ export default class Web3Mgr {
     }
   }
   
+  async getPlayerAllWeaponInfo(callback: Function) {
+    if(this.GameContract) {
+      let res = await this.GameContract.methods.getPlayerAllWeaponInfo().call();
+      console.log(res)
+      callback(res);
+    }
+  }
 
+  async getPlayerAllSkinInfo(callback: Function) {
+    if(this.GameContract) {
+      let res = await this.GameContract.methods.getPlayerAllSkinInfo().call();
+      console.log(res)
+      callback(res);
+    }
+  }
 
   // metamask
 

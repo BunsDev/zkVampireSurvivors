@@ -164,6 +164,22 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         initLotteryList();
     }
 
+    // lottery
+    function initLotteryList() public onlyOwner {
+        LotteryItemList.push(LotteryItem(0,100));
+        LotteryItemList.push(LotteryItem(0,50));
+        LotteryItemList.push(LotteryItem(1,10));
+        LotteryItemList.push(LotteryItem(0,50));
+        LotteryItemList.push(LotteryItem(0,150));
+        LotteryItemList.push(LotteryItem(3,18));
+        LotteryItemList.push(LotteryItem(0,200));
+        LotteryItemList.push(LotteryItem(0,50));
+        LotteryItemList.push(LotteryItem(1,20));
+        LotteryItemList.push(LotteryItem(0,50));
+        LotteryItemList.push(LotteryItem(0,200));
+        LotteryItemList.push(LotteryItem(3,9));
+    }
+
     // eg. 3000usdt = 1 eth = 10**18
     // current eth price: $3000, if usd = 3000, then you will get 10**18
     function getGasTokenAmountByUsd(uint usd) public view returns(uint) {
@@ -198,6 +214,30 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
         }
     }
 
+    function testWeaponSkin() external  {
+        playerWeaponMap[msg.sender].push(5);
+        playerWeaponMap[msg.sender].push(15);
+        playerSkinMap[msg.sender].push(2);
+    }
+
+    function getPlayerAllWeaponInfo() external view returns(uint[] memory weaponIdList, uint[] memory weaponLevelList) {
+        weaponIdList = playerWeaponMap[msg.sender];
+        weaponLevelList = new uint[](weaponIdList.length);
+        for(uint i=0; i < weaponIdList.length; i++) {
+            weaponLevelList[i] = playerWeaponLevelMap[msg.sender][i];
+        }
+        return (weaponIdList, weaponLevelList);
+    }
+
+    function getPlayerAllSkinInfo() external view returns(uint[] memory skinIdList, uint[] memory skinLevelList) {
+        skinIdList = playerSkinMap[msg.sender];
+        skinLevelList = new uint[](skinIdList.length);
+        for(uint i=0; i < skinIdList.length; i++) {
+            skinLevelList[i] = playerSkinLevelMap[msg.sender][i];
+        }
+        return (skinIdList, skinLevelList);
+    }
+
     function buyOrUpgradeSkin(uint id) external {
         uint[] memory skinList = playerSkinMap[msg.sender];
         bool found = false;
@@ -206,7 +246,7 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
                 found = true;
             }
         }
-        if(found) {
+        if(found || id == 0) {
             playerSkinLevelMap[msg.sender][id]++;
         } else {
             playerSkinMap[msg.sender].push(id);
@@ -221,27 +261,13 @@ contract ZKGameClient is VRFV2PlusWrapperConsumerBase, ConfirmedOwner {
                 found = true;
             }
         }
-        if(found) {
+        if(found || id == 0) {
             playerWeaponLevelMap[msg.sender][id]++;
         } else {
             playerWeaponMap[msg.sender].push(id);
         }
     }
 
-    function initLotteryList() public onlyOwner {
-        LotteryItemList.push(LotteryItem(0,100));
-        LotteryItemList.push(LotteryItem(0,50));
-        LotteryItemList.push(LotteryItem(1,10));
-        LotteryItemList.push(LotteryItem(0,50));
-        LotteryItemList.push(LotteryItem(0,150));
-        LotteryItemList.push(LotteryItem(3,18));
-        LotteryItemList.push(LotteryItem(0,200));
-        LotteryItemList.push(LotteryItem(0,50));
-        LotteryItemList.push(LotteryItem(1,20));
-        LotteryItemList.push(LotteryItem(0,50));
-        LotteryItemList.push(LotteryItem(0,200));
-        LotteryItemList.push(LotteryItem(3,9));
-    }
 
     // lottery
     function requestLottery() external payable returns (uint256) {
