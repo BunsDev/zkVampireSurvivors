@@ -81,7 +81,7 @@ formatTime(timestamp:string) {
         if(grade>0) {
           rankingsList.push(
             {
-              'chain': this.getChainNameByIndex(topChainIndex[i]),
+              'chain': this.getChainNameByIndex(parseInt(topChainIndex[i])),
               'address': topPlayerList[i],
               'grade': grade,
             }
@@ -98,7 +98,6 @@ formatTime(timestamp:string) {
 
       rankingsList.sort((a, b) => b.grade - a.grade);
 
-  
       let list = cc.find("panel/list", this._page);
       let content = cc.find("view/content", list);
       for (let i = 0; i < rankingsList.length; i++) {
